@@ -1,0 +1,21 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=example_user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=example_db
+  app:
+    build: .
+    depends_on:
+      - postgres
+    tty: true
+    ports:
+      - "8000:8000"
+    environment:
+      - GOPATH=/go
+    volumes:
+      - .:/go/src/github.com/kougakusaiHPTeam/clubhook-api
