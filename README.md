@@ -11,7 +11,7 @@ Docker(docker-compose)で開発環境を用意する場合はgit cloneで、
 
 ```
 $ git clone https://github.com/kougakusaiHPTeam/clubhook-api.git
-$ cd Clubhook
+$ cd clubhook-api
 ```
 
 #### go get

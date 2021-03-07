@@ -11,5 +11,4 @@ WORKDIR /go/src/github.com/kougakusaiHPTeam/clubhook-api
 ADD . /go/src/github.com/kougakusaiHPTeam/clubhook-api
 
 # 使用するモジュールのインストール
-RUN go get github.com/labstack/echo && \
-  go get github.com/jinzhu/gorm
+RUN go get github.com/labstack/echo && go get gorm.io/gorm

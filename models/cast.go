@@ -1,5 +1,7 @@
 package models
 
+import "gorm.io/gorm"
+
 type Cast struct {
-	User_id int
+	gorm.Model
 }

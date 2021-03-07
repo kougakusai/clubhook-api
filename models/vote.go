@@ -1,6 +1,8 @@
 package models
 
+import "gorm.io/gorm"
+
 type Vote struct {
-	ID   int
+	gorm.Model
 	Name string
 }

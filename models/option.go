@@ -1,6 +1,8 @@
 package models
 
+import "gorm.io/gorm"
+
 type Option struct {
-	ID   int
+	gorm.Model
 	Name string
 }

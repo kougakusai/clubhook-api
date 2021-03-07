@@ -1,7 +1,8 @@
 package models
 
+import "time"
+
 type Calender struct {
-	Day     int
+	Day     time.Time `gorm:"primaryKey"`
 	Holiday bool
-	Color   int
 }
