@@ -12,7 +12,9 @@ import (
 )
 
 func main() {
-	db.Migrate(db.Connect())
+	psql := db.Migrate(db.Connect())
+
+	defer db.Close(psql)
 
 	e := echo.New()
 

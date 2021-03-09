@@ -4,5 +4,7 @@ import "gorm.io/gorm"
 
 type Vote struct {
 	gorm.Model
-	Name string
+	Name    string
+	EventID uint     // foreign key
+	Options []Option // Vote has many Option
 }

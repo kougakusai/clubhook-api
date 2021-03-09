@@ -31,3 +31,11 @@ func Connect() *gorm.DB {
 	}
 	return db
 }
+
+func Close(db *gorm.DB) {
+	sqldb, err := db.DB()
+	if err != nil {
+		panic(err)
+	}
+	sqldb.Close()
+}

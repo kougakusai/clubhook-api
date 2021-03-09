@@ -3,6 +3,8 @@ package models
 import "time"
 
 type Calender struct {
-	Day     time.Time `gorm:"primaryKey"`
+	Date    time.Time `gorm:"primaryKey"`
+	Weekday int
 	Holiday bool
+	Events  []Event // Calender has many Event
 }
