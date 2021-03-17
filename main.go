@@ -8,6 +8,11 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
+	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/kougakusaiHPTeam/clubhook-api/graph"
+	"github.com/kougakusaiHPTeam/clubhook-api/graph/generated"
+
 	"github.com/kougakusaiHPTeam/clubhook-api/db"
 )
 
@@ -22,6 +27,8 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.GET("/", hello())
+	e.GET("/playground", playgroundHander())
+	e.POST("/graphql", gqlHander())
 
 	err := e.Start(getListeningPort())
 	if err != nil {
@@ -40,5 +47,23 @@ func getListeningPort() string {
 func hello() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello from clubhook-api.")
+	}
+}
+
+func playgroundHander() echo.HandlerFunc {
+	h := playground.Handler("GraphQL playground", "/graphql")
+
+	return func(c echo.Context) error {
+		h.ServeHTTP(c.Response(), c.Request())
+		return nil
+	}
+}
+
+func gqlHander() echo.HandlerFunc {
+	h := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
+
+	return func(c echo.Context) error {
+		h.ServeHTTP(c.Response(), c.Request())
+		return nil
 	}
 }

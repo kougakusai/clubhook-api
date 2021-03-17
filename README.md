@@ -34,8 +34,7 @@ $ go run main.go
 # Access to "localhost:8000"
 $exit
 
-$docker-compose stop
-$docker-compose rm
+$docker-compose down
 ```
 
 #### VSCodeでDevContainerを起動し開発する場合
