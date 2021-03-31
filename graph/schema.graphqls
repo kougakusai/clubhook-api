@@ -1,28 +1,75 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
+scalar Time
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
-}
+scalar Uint
 
 type User {
-  id: ID!
-  name: String!
+	id: Uint!
+	number: String
+	name: String
+	email: String
+	grade: Uint
+	group: Group
+	casts: [Cast]
+	events: [Event]
+}
+
+type Group {
+	id: Uint!
+	name: String
+	users: [User]
+}
+
+type Event {
+	id: Uint!
+	name: String
+	place: String
+	owner: User
+	calender: Time
+	vote: Vote
+	users: [User]
+}
+
+type Calender {
+	date: Time!
+	weekday: Int
+	holiday: Boolean
+	events: [Event]
+}
+
+type Vote {
+	id: Uint!
+	name: String
+	event: Event
+	options: [Option]
+}
+
+type Option {
+	id: Uint!
+	name: String
+	vote: Vote
+	casts: [Cast]
+}
+
+type Cast {
+	id: Uint!
+	option: Option
+	user: User
 }
 
 type Query {
-  todos: [Todo!]!
+	user(id: Uint!): User
+	event(id: Uint!): Event
+	users: [User]
+	events: [Event]
 }
 
-input NewTodo {
-  text: String!
-  userId: String!
+input NewUser {
+	number: String
+	name: String
+	email: String
+	grade: Uint
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+	createUser(input: NewUser!): User
 }

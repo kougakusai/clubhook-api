@@ -54,3 +54,34 @@ models:
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
+  Uint:
+    model:
+      - github.com/kougakusaiHPTeam/clubhook-api/graph/model.Uint
+
+  User:
+    model:
+      - github.com/kougakusaiHPTeam/clubhook-api/models.User
+
+  Group:
+    model:
+      - github.com/kougakusaiHPTeam/clubhook-api/models.Group
+
+  Event:
+    model:
+      - github.com/kougakusaiHPTeam/clubhook-api/models.Event
+
+  Calender:
+    model:
+      - github.com/kougakusaiHPTeam/clubhook-api/models.Calender
+
+  Vote:
+    model:
+      - github.com/kougakusaiHPTeam/clubhook-api/models.Vote
+
+  Option:
+    model:
+      - github.com/kougakusaiHPTeam/clubhook-api/models.Option
+
+  Cast:
+    model:
+      - github.com/kougakusaiHPTeam/clubhook-api/models.Cast
