@@ -4,72 +4,176 @@ scalar Uint
 
 type User {
 	id: Uint!
-	number: String
-	name: String
-	email: String
-	grade: Uint
+	name: String!
+	email: String!
+	grade: Uint!
 	group: Group
-	casts: [Cast]
-	events: [Event]
+	casts: [Cast!]
+	events: [Event!]
 }
 
 type Group {
 	id: Uint!
-	name: String
-	users: [User]
+	name: String!
+	users: [User!]
 }
 
 type Event {
 	id: Uint!
-	name: String
-	place: String
-	owner: User
-	calender: Time
+	name: String!
+	place: String!
+	owner: User!
+	calender: Calender
 	vote: Vote
-	users: [User]
+	users: [User!]
 }
 
 type Calender {
 	date: Time!
-	weekday: Int
+	weekday: Int!
 	holiday: Boolean
-	events: [Event]
+	events: [Event!]
 }
 
 type Vote {
 	id: Uint!
-	name: String
-	event: Event
-	options: [Option]
+	name: String!
+	event: Event!
+	options: [Option!]!
 }
 
 type Option {
 	id: Uint!
-	name: String
-	vote: Vote
-	casts: [Cast]
+	name: String!
+	vote: Vote!
+	casts: [Cast!]
 }
 
 type Cast {
 	id: Uint!
-	option: Option
-	user: User
+	option: Option!
+	user: User!
 }
 
 type Query {
 	user(id: Uint!): User
+	group(id: Uint!): Group
 	event(id: Uint!): Event
-	users: [User]
-	events: [Event]
+	calender(date: Time!): Calender
+	vote(id: Uint!): Vote
+	option(id: Uint!): Option
+	cast(id: Uint!): Cast
+
+	allUsers: [User!]
+	allGroups: [Group!]
+	allEvents: [Event!]
+	monthCalenders(month: Time!): [Calender!]
+	allOptions(voteId: Uint!): [Option!]
+	allCasts(optionId: Uint!): [Cast!]
 }
 
 input NewUser {
-	number: String
+	name: String!
+	email: String!
+	grade: Uint!
+	groupId: Uint!
+}
+
+input EditUser {
+	userId: Uint!
 	name: String
 	email: String
 	grade: Uint
+	groupId: Uint
+}
+
+input NewGroup {
+	name: String!
+}
+
+input EditGroup {
+	groupId: Uint!
+	name: String!
+}
+
+input NewEvent {
+	name: String!
+	place: String!
+	ownerId: Uint!
+	date: Time!
+	usersId: [Uint!]!
+}
+
+input EditEvent {
+	id: Uint!
+	name: String!
+	place: String!
+	ownerId: Uint!
+	date: Time!
+	usersId: [Uint!]!
+}
+
+input NewCalender{
+	date: Time!
+	holiday: Boolean!
+}
+
+input EditCalender{
+	date: Time!
+	holiday: Boolean!
+}
+
+input NewVote{
+	name: String!
+	eventId: Uint!
+}
+
+input EditVote{
+	id: Uint!
+	name: String!
+	eventId: Uint!
+}
+
+input NewOption{
+	name: String!
+	voteId: Uint!
+}
+
+input EditOption{
+	id: Uint!
+	name: String!
+}
+
+input NewCast{
+	optionId: Uint!
+	userId: Uint!
+}
+
+input EditCast{
+	id: Uint!
+	optionId: Uint!
 }
 
 type Mutation {
-	createUser(input: NewUser!): User
+	createUser(input: NewUser!): User!
+	updateUser(input: EditUser!): User!
+	deleteUser(userId: Uint!): User!
+	createGroup(input: NewGroup!): Group!
+	updateGroup(input: EditGroup!): Group!
+	deleteGroup(groupId: Uint!): Group!
+	createEvent(input: NewEvent!): Event!
+	updateEvent(input: EditEvent!): Event!
+	deleteEvent(eventId: Uint!): Event!
+	createCalender(input: NewCalender!): Calender!
+	updateCalender(input: EditCalender!): Calender!
+	deleteCalender(calenderDate: Time!): Calender!
+	createVote(input: NewVote!): Vote!
+	updateVote(input: EditVote!): Vote!
+	deleteVote(voteId: Uint!): Vote!
+	createOption(input: NewOption!): Option!
+	updateOption(input: EditOption!): Option!
+	deleteOption(optionId: Uint!): Option!
+	createCast(input: NewCast!): Cast!
+	updateCast(input: EditCast!): Cast!
+	deleteCast(castId: Uint!): Cast!
 }

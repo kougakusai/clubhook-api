@@ -7,6 +7,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"gorm.io/gorm"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -28,7 +29,7 @@ func main() {
 
 	e.GET("/", hello())
 	e.GET("/playground", playgroundHander())
-	e.POST("/graphql", gqlHander())
+	e.POST("/graphql", gqlHander(psql))
 
 	err := e.Start(getListeningPort())
 	if err != nil {
@@ -59,8 +60,8 @@ func playgroundHander() echo.HandlerFunc {
 	}
 }
 
-func gqlHander() echo.HandlerFunc {
-	h := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
+func gqlHander(db *gorm.DB) echo.HandlerFunc {
+	h := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{DB: db}}))
 
 	return func(c echo.Context) error {
 		h.ServeHTTP(c.Response(), c.Request())

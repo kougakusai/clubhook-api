@@ -37,7 +37,6 @@ type Config struct {
 }
 
 type ResolverRoot interface {
-	Event() EventResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
 	Vote() VoteResolver
@@ -77,7 +76,27 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateUser func(childComplexity int, input model.NewUser) int
+		CreateCalender func(childComplexity int, input model.NewCalender) int
+		CreateCast     func(childComplexity int, input model.NewCast) int
+		CreateEvent    func(childComplexity int, input model.NewEvent) int
+		CreateGroup    func(childComplexity int, input model.NewGroup) int
+		CreateOption   func(childComplexity int, input model.NewOption) int
+		CreateUser     func(childComplexity int, input model.NewUser) int
+		CreateVote     func(childComplexity int, input model.NewVote) int
+		DeleteCalender func(childComplexity int, calenderDate time.Time) int
+		DeleteCast     func(childComplexity int, castID uint) int
+		DeleteEvent    func(childComplexity int, eventID uint) int
+		DeleteGroup    func(childComplexity int, groupID uint) int
+		DeleteOption   func(childComplexity int, optionID uint) int
+		DeleteUser     func(childComplexity int, userID uint) int
+		DeleteVote     func(childComplexity int, voteID uint) int
+		UpdateCalender func(childComplexity int, input model.EditCalender) int
+		UpdateCast     func(childComplexity int, input model.EditCast) int
+		UpdateEvent    func(childComplexity int, input model.EditEvent) int
+		UpdateGroup    func(childComplexity int, input model.EditGroup) int
+		UpdateOption   func(childComplexity int, input model.EditOption) int
+		UpdateUser     func(childComplexity int, input model.EditUser) int
+		UpdateVote     func(childComplexity int, input model.EditVote) int
 	}
 
 	Option struct {
@@ -88,10 +107,19 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		Event  func(childComplexity int, id uint) int
-		Events func(childComplexity int) int
-		User   func(childComplexity int, id uint) int
-		Users  func(childComplexity int) int
+		AllCasts       func(childComplexity int, optionID uint) int
+		AllEvents      func(childComplexity int) int
+		AllGroups      func(childComplexity int) int
+		AllOptions     func(childComplexity int, voteID uint) int
+		AllUsers       func(childComplexity int) int
+		Calender       func(childComplexity int, date time.Time) int
+		Cast           func(childComplexity int, id uint) int
+		Event          func(childComplexity int, id uint) int
+		Group          func(childComplexity int, id uint) int
+		MonthCalenders func(childComplexity int, month time.Time) int
+		Option         func(childComplexity int, id uint) int
+		User           func(childComplexity int, id uint) int
+		Vote           func(childComplexity int, id uint) int
 	}
 
 	User struct {
@@ -102,7 +130,6 @@ type ComplexityRoot struct {
 		Group  func(childComplexity int) int
 		ID     func(childComplexity int) int
 		Name   func(childComplexity int) int
-		Number func(childComplexity int) int
 	}
 
 	Vote struct {
@@ -113,17 +140,43 @@ type ComplexityRoot struct {
 	}
 }
 
-type EventResolver interface {
-	Calender(ctx context.Context, obj *models.Event) (*time.Time, error)
-}
 type MutationResolver interface {
 	CreateUser(ctx context.Context, input model.NewUser) (*models.User, error)
+	UpdateUser(ctx context.Context, input model.EditUser) (*models.User, error)
+	DeleteUser(ctx context.Context, userID uint) (*models.User, error)
+	CreateGroup(ctx context.Context, input model.NewGroup) (*models.Group, error)
+	UpdateGroup(ctx context.Context, input model.EditGroup) (*models.Group, error)
+	DeleteGroup(ctx context.Context, groupID uint) (*models.Group, error)
+	CreateEvent(ctx context.Context, input model.NewEvent) (*models.Event, error)
+	UpdateEvent(ctx context.Context, input model.EditEvent) (*models.Event, error)
+	DeleteEvent(ctx context.Context, eventID uint) (*models.Event, error)
+	CreateCalender(ctx context.Context, input model.NewCalender) (*models.Calender, error)
+	UpdateCalender(ctx context.Context, input model.EditCalender) (*models.Calender, error)
+	DeleteCalender(ctx context.Context, calenderDate time.Time) (*models.Calender, error)
+	CreateVote(ctx context.Context, input model.NewVote) (*models.Vote, error)
+	UpdateVote(ctx context.Context, input model.EditVote) (*models.Vote, error)
+	DeleteVote(ctx context.Context, voteID uint) (*models.Vote, error)
+	CreateOption(ctx context.Context, input model.NewOption) (*models.Option, error)
+	UpdateOption(ctx context.Context, input model.EditOption) (*models.Option, error)
+	DeleteOption(ctx context.Context, optionID uint) (*models.Option, error)
+	CreateCast(ctx context.Context, input model.NewCast) (*models.Cast, error)
+	UpdateCast(ctx context.Context, input model.EditCast) (*models.Cast, error)
+	DeleteCast(ctx context.Context, castID uint) (*models.Cast, error)
 }
 type QueryResolver interface {
 	User(ctx context.Context, id uint) (*models.User, error)
+	Group(ctx context.Context, id uint) (*models.Group, error)
 	Event(ctx context.Context, id uint) (*models.Event, error)
-	Users(ctx context.Context) ([]*models.User, error)
-	Events(ctx context.Context) ([]*models.Event, error)
+	Calender(ctx context.Context, date time.Time) (*models.Calender, error)
+	Vote(ctx context.Context, id uint) (*models.Vote, error)
+	Option(ctx context.Context, id uint) (*models.Option, error)
+	Cast(ctx context.Context, id uint) (*models.Cast, error)
+	AllUsers(ctx context.Context) ([]*models.User, error)
+	AllGroups(ctx context.Context) ([]*models.Group, error)
+	AllEvents(ctx context.Context) ([]*models.Event, error)
+	MonthCalenders(ctx context.Context, month time.Time) ([]*models.Calender, error)
+	AllOptions(ctx context.Context, voteID uint) ([]*models.Option, error)
+	AllCasts(ctx context.Context, optionID uint) ([]*models.Cast, error)
 }
 type VoteResolver interface {
 	Event(ctx context.Context, obj *models.Vote) (*models.Event, error)
@@ -263,6 +316,66 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Group.Users(childComplexity), true
 
+	case "Mutation.createCalender":
+		if e.complexity.Mutation.CreateCalender == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createCalender_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateCalender(childComplexity, args["input"].(model.NewCalender)), true
+
+	case "Mutation.createCast":
+		if e.complexity.Mutation.CreateCast == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createCast_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateCast(childComplexity, args["input"].(model.NewCast)), true
+
+	case "Mutation.createEvent":
+		if e.complexity.Mutation.CreateEvent == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createEvent_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateEvent(childComplexity, args["input"].(model.NewEvent)), true
+
+	case "Mutation.createGroup":
+		if e.complexity.Mutation.CreateGroup == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createGroup_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateGroup(childComplexity, args["input"].(model.NewGroup)), true
+
+	case "Mutation.createOption":
+		if e.complexity.Mutation.CreateOption == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createOption_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateOption(childComplexity, args["input"].(model.NewOption)), true
+
 	case "Mutation.createUser":
 		if e.complexity.Mutation.CreateUser == nil {
 			break
@@ -274,6 +387,186 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(model.NewUser)), true
+
+	case "Mutation.createVote":
+		if e.complexity.Mutation.CreateVote == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createVote_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateVote(childComplexity, args["input"].(model.NewVote)), true
+
+	case "Mutation.deleteCalender":
+		if e.complexity.Mutation.DeleteCalender == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteCalender_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteCalender(childComplexity, args["calenderDate"].(time.Time)), true
+
+	case "Mutation.deleteCast":
+		if e.complexity.Mutation.DeleteCast == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteCast_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteCast(childComplexity, args["castId"].(uint)), true
+
+	case "Mutation.deleteEvent":
+		if e.complexity.Mutation.DeleteEvent == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteEvent_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteEvent(childComplexity, args["eventId"].(uint)), true
+
+	case "Mutation.deleteGroup":
+		if e.complexity.Mutation.DeleteGroup == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteGroup_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteGroup(childComplexity, args["groupId"].(uint)), true
+
+	case "Mutation.deleteOption":
+		if e.complexity.Mutation.DeleteOption == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteOption_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteOption(childComplexity, args["optionId"].(uint)), true
+
+	case "Mutation.deleteUser":
+		if e.complexity.Mutation.DeleteUser == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteUser_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteUser(childComplexity, args["userId"].(uint)), true
+
+	case "Mutation.deleteVote":
+		if e.complexity.Mutation.DeleteVote == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteVote_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteVote(childComplexity, args["voteId"].(uint)), true
+
+	case "Mutation.updateCalender":
+		if e.complexity.Mutation.UpdateCalender == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateCalender_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateCalender(childComplexity, args["input"].(model.EditCalender)), true
+
+	case "Mutation.updateCast":
+		if e.complexity.Mutation.UpdateCast == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateCast_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateCast(childComplexity, args["input"].(model.EditCast)), true
+
+	case "Mutation.updateEvent":
+		if e.complexity.Mutation.UpdateEvent == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateEvent_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateEvent(childComplexity, args["input"].(model.EditEvent)), true
+
+	case "Mutation.updateGroup":
+		if e.complexity.Mutation.UpdateGroup == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateGroup_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateGroup(childComplexity, args["input"].(model.EditGroup)), true
+
+	case "Mutation.updateOption":
+		if e.complexity.Mutation.UpdateOption == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateOption_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateOption(childComplexity, args["input"].(model.EditOption)), true
+
+	case "Mutation.updateUser":
+		if e.complexity.Mutation.UpdateUser == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateUser_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateUser(childComplexity, args["input"].(model.EditUser)), true
+
+	case "Mutation.updateVote":
+		if e.complexity.Mutation.UpdateVote == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateVote_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateVote(childComplexity, args["input"].(model.EditVote)), true
 
 	case "Option.casts":
 		if e.complexity.Option.Casts == nil {
@@ -303,6 +596,75 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Option.Vote(childComplexity), true
 
+	case "Query.allCasts":
+		if e.complexity.Query.AllCasts == nil {
+			break
+		}
+
+		args, err := ec.field_Query_allCasts_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.AllCasts(childComplexity, args["optionId"].(uint)), true
+
+	case "Query.allEvents":
+		if e.complexity.Query.AllEvents == nil {
+			break
+		}
+
+		return e.complexity.Query.AllEvents(childComplexity), true
+
+	case "Query.allGroups":
+		if e.complexity.Query.AllGroups == nil {
+			break
+		}
+
+		return e.complexity.Query.AllGroups(childComplexity), true
+
+	case "Query.allOptions":
+		if e.complexity.Query.AllOptions == nil {
+			break
+		}
+
+		args, err := ec.field_Query_allOptions_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.AllOptions(childComplexity, args["voteId"].(uint)), true
+
+	case "Query.allUsers":
+		if e.complexity.Query.AllUsers == nil {
+			break
+		}
+
+		return e.complexity.Query.AllUsers(childComplexity), true
+
+	case "Query.calender":
+		if e.complexity.Query.Calender == nil {
+			break
+		}
+
+		args, err := ec.field_Query_calender_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Calender(childComplexity, args["date"].(time.Time)), true
+
+	case "Query.cast":
+		if e.complexity.Query.Cast == nil {
+			break
+		}
+
+		args, err := ec.field_Query_cast_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Cast(childComplexity, args["id"].(uint)), true
+
 	case "Query.event":
 		if e.complexity.Query.Event == nil {
 			break
@@ -315,12 +677,41 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Event(childComplexity, args["id"].(uint)), true
 
-	case "Query.events":
-		if e.complexity.Query.Events == nil {
+	case "Query.group":
+		if e.complexity.Query.Group == nil {
 			break
 		}
 
-		return e.complexity.Query.Events(childComplexity), true
+		args, err := ec.field_Query_group_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Group(childComplexity, args["id"].(uint)), true
+
+	case "Query.monthCalenders":
+		if e.complexity.Query.MonthCalenders == nil {
+			break
+		}
+
+		args, err := ec.field_Query_monthCalenders_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.MonthCalenders(childComplexity, args["month"].(time.Time)), true
+
+	case "Query.option":
+		if e.complexity.Query.Option == nil {
+			break
+		}
+
+		args, err := ec.field_Query_option_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Option(childComplexity, args["id"].(uint)), true
 
 	case "Query.user":
 		if e.complexity.Query.User == nil {
@@ -334,12 +725,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.User(childComplexity, args["id"].(uint)), true
 
-	case "Query.users":
-		if e.complexity.Query.Users == nil {
+	case "Query.vote":
+		if e.complexity.Query.Vote == nil {
 			break
 		}
 
-		return e.complexity.Query.Users(childComplexity), true
+		args, err := ec.field_Query_vote_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Vote(childComplexity, args["id"].(uint)), true
 
 	case "User.casts":
 		if e.complexity.User.Casts == nil {
@@ -389,13 +785,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.Name(childComplexity), true
-
-	case "User.number":
-		if e.complexity.User.Number == nil {
-			break
-		}
-
-		return e.complexity.User.Number(childComplexity), true
 
 	case "Vote.event":
 		if e.complexity.Vote.Event == nil {
@@ -495,74 +884,178 @@ scalar Uint
 
 type User {
 	id: Uint!
-	number: String
-	name: String
-	email: String
-	grade: Uint
+	name: String!
+	email: String!
+	grade: Uint!
 	group: Group
-	casts: [Cast]
-	events: [Event]
+	casts: [Cast!]
+	events: [Event!]
 }
 
 type Group {
 	id: Uint!
-	name: String
-	users: [User]
+	name: String!
+	users: [User!]
 }
 
 type Event {
 	id: Uint!
-	name: String
-	place: String
-	owner: User
-	calender: Time
+	name: String!
+	place: String!
+	owner: User!
+	calender: Calender
 	vote: Vote
-	users: [User]
+	users: [User!]
 }
 
 type Calender {
 	date: Time!
-	weekday: Int
+	weekday: Int!
 	holiday: Boolean
-	events: [Event]
+	events: [Event!]
 }
 
 type Vote {
 	id: Uint!
-	name: String
-	event: Event
-	options: [Option]
+	name: String!
+	event: Event!
+	options: [Option!]!
 }
 
 type Option {
 	id: Uint!
-	name: String
-	vote: Vote
-	casts: [Cast]
+	name: String!
+	vote: Vote!
+	casts: [Cast!]
 }
 
 type Cast {
 	id: Uint!
-	option: Option
-	user: User
+	option: Option!
+	user: User!
 }
 
 type Query {
 	user(id: Uint!): User
+	group(id: Uint!): Group
 	event(id: Uint!): Event
-	users: [User]
-	events: [Event]
+	calender(date: Time!): Calender
+	vote(id: Uint!): Vote
+	option(id: Uint!): Option
+	cast(id: Uint!): Cast
+
+	allUsers: [User!]
+	allGroups: [Group!]
+	allEvents: [Event!]
+	monthCalenders(month: Time!): [Calender!]
+	allOptions(voteId: Uint!): [Option!]
+	allCasts(optionId: Uint!): [Cast!]
 }
 
 input NewUser {
-	number: String
+	name: String!
+	email: String!
+	grade: Uint!
+	groupId: Uint!
+}
+
+input EditUser {
+	userId: Uint!
 	name: String
 	email: String
 	grade: Uint
+	groupId: Uint
+}
+
+input NewGroup {
+	name: String!
+}
+
+input EditGroup {
+	groupId: Uint!
+	name: String!
+}
+
+input NewEvent {
+	name: String!
+	place: String!
+	ownerId: Uint!
+	date: Time!
+	usersId: [Uint!]!
+}
+
+input EditEvent {
+	id: Uint!
+	name: String!
+	place: String!
+	ownerId: Uint!
+	date: Time!
+	usersId: [Uint!]!
+}
+
+input NewCalender{
+	date: Time!
+	holiday: Boolean!
+}
+
+input EditCalender{
+	date: Time!
+	holiday: Boolean!
+}
+
+input NewVote{
+	name: String!
+	eventId: Uint!
+}
+
+input EditVote{
+	id: Uint!
+	name: String!
+	eventId: Uint!
+}
+
+input NewOption{
+	name: String!
+	voteId: Uint!
+}
+
+input EditOption{
+	id: Uint!
+	name: String!
+}
+
+input NewCast{
+	optionId: Uint!
+	userId: Uint!
+}
+
+input EditCast{
+	id: Uint!
+	optionId: Uint!
 }
 
 type Mutation {
-	createUser(input: NewUser!): User
+	createUser(input: NewUser!): User!
+	updateUser(input: EditUser!): User!
+	deleteUser(userId: Uint!): User!
+	createGroup(input: NewGroup!): Group!
+	updateGroup(input: EditGroup!): Group!
+	deleteGroup(groupId: Uint!): Group!
+	createEvent(input: NewEvent!): Event!
+	updateEvent(input: EditEvent!): Event!
+	deleteEvent(eventId: Uint!): Event!
+	createCalender(input: NewCalender!): Calender!
+	updateCalender(input: EditCalender!): Calender!
+	deleteCalender(calenderDate: Time!): Calender!
+	createVote(input: NewVote!): Vote!
+	updateVote(input: EditVote!): Vote!
+	deleteVote(voteId: Uint!): Vote!
+	createOption(input: NewOption!): Option!
+	updateOption(input: EditOption!): Option!
+	deleteOption(optionId: Uint!): Option!
+	createCast(input: NewCast!): Cast!
+	updateCast(input: EditCast!): Cast!
+	deleteCast(castId: Uint!): Cast!
 }`, BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)
@@ -571,6 +1064,81 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
 // region    ***************************** args.gotpl *****************************
 
+func (ec *executionContext) field_Mutation_createCalender_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.NewCalender
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNNewCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewCalender(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createCast_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.NewCast
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNNewCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewCast(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createEvent_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.NewEvent
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNNewEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewEvent(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createGroup_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.NewGroup
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNNewGroup2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewGroup(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createOption_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.NewOption
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNNewOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewOption(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -578,6 +1146,231 @@ func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, 
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNNewUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewUser(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createVote_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.NewVote
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNNewVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewVote(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteCalender_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 time.Time
+	if tmp, ok := rawArgs["calenderDate"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("calenderDate"))
+		arg0, err = ec.unmarshalNTime2timeᚐTime(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["calenderDate"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteCast_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 uint
+	if tmp, ok := rawArgs["castId"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("castId"))
+		arg0, err = ec.unmarshalNUint2uint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["castId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteEvent_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 uint
+	if tmp, ok := rawArgs["eventId"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("eventId"))
+		arg0, err = ec.unmarshalNUint2uint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["eventId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteGroup_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 uint
+	if tmp, ok := rawArgs["groupId"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("groupId"))
+		arg0, err = ec.unmarshalNUint2uint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["groupId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteOption_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 uint
+	if tmp, ok := rawArgs["optionId"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("optionId"))
+		arg0, err = ec.unmarshalNUint2uint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["optionId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteUser_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 uint
+	if tmp, ok := rawArgs["userId"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
+		arg0, err = ec.unmarshalNUint2uint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["userId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteVote_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 uint
+	if tmp, ok := rawArgs["voteId"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("voteId"))
+		arg0, err = ec.unmarshalNUint2uint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["voteId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateCalender_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.EditCalender
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNEditCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditCalender(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateCast_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.EditCast
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNEditCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditCast(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateEvent_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.EditEvent
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNEditEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditEvent(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateGroup_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.EditGroup
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNEditGroup2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditGroup(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateOption_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.EditOption
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNEditOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditOption(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateUser_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.EditUser
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNEditUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditUser(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateVote_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.EditVote
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNEditVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditVote(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -601,6 +1394,66 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 	return args, nil
 }
 
+func (ec *executionContext) field_Query_allCasts_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 uint
+	if tmp, ok := rawArgs["optionId"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("optionId"))
+		arg0, err = ec.unmarshalNUint2uint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["optionId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_allOptions_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 uint
+	if tmp, ok := rawArgs["voteId"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("voteId"))
+		arg0, err = ec.unmarshalNUint2uint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["voteId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_calender_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 time.Time
+	if tmp, ok := rawArgs["date"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("date"))
+		arg0, err = ec.unmarshalNTime2timeᚐTime(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["date"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_cast_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 uint
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNUint2uint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Query_event_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -616,7 +1469,67 @@ func (ec *executionContext) field_Query_event_args(ctx context.Context, rawArgs 
 	return args, nil
 }
 
+func (ec *executionContext) field_Query_group_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 uint
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNUint2uint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_monthCalenders_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 time.Time
+	if tmp, ok := rawArgs["month"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("month"))
+		arg0, err = ec.unmarshalNTime2timeᚐTime(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["month"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_option_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 uint
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNUint2uint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Query_user_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 uint
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNUint2uint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_vote_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 uint
@@ -729,11 +1642,14 @@ func (ec *executionContext) _Calender_weekday(ctx context.Context, field graphql
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(int)
 	fc.Result = res
-	return ec.marshalOInt2int(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Calender_holiday(ctx context.Context, field graphql.CollectedField, obj *models.Calender) (ret graphql.Marshaler) {
@@ -797,7 +1713,7 @@ func (ec *executionContext) _Calender_events(ctx context.Context, field graphql.
 	}
 	res := resTmp.([]models.Event)
 	fc.Result = res
-	return ec.marshalOEvent2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
+	return ec.marshalOEvent2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Cast_id(ctx context.Context, field graphql.CollectedField, obj *models.Cast) (ret graphql.Marshaler) {
@@ -860,11 +1776,14 @@ func (ec *executionContext) _Cast_option(ctx context.Context, field graphql.Coll
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(models.Option)
 	fc.Result = res
-	return ec.marshalOOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
+	return ec.marshalNOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Cast_user(ctx context.Context, field graphql.CollectedField, obj *models.Cast) (ret graphql.Marshaler) {
@@ -892,11 +1811,14 @@ func (ec *executionContext) _Cast_user(ctx context.Context, field graphql.Collec
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(models.User)
 	fc.Result = res
-	return ec.marshalOUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Event_id(ctx context.Context, field graphql.CollectedField, obj *models.Event) (ret graphql.Marshaler) {
@@ -959,11 +1881,14 @@ func (ec *executionContext) _Event_name(ctx context.Context, field graphql.Colle
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Event_place(ctx context.Context, field graphql.CollectedField, obj *models.Event) (ret graphql.Marshaler) {
@@ -991,11 +1916,14 @@ func (ec *executionContext) _Event_place(ctx context.Context, field graphql.Coll
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Event_owner(ctx context.Context, field graphql.CollectedField, obj *models.Event) (ret graphql.Marshaler) {
@@ -1023,11 +1951,14 @@ func (ec *executionContext) _Event_owner(ctx context.Context, field graphql.Coll
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(models.User)
 	fc.Result = res
-	return ec.marshalOUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Event_calender(ctx context.Context, field graphql.CollectedField, obj *models.Event) (ret graphql.Marshaler) {
@@ -1041,14 +1972,14 @@ func (ec *executionContext) _Event_calender(ctx context.Context, field graphql.C
 		Object:     "Event",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
+		IsMethod:   false,
+		IsResolver: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Event().Calender(rctx, obj)
+		return obj.Calender, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1057,9 +1988,9 @@ func (ec *executionContext) _Event_calender(ctx context.Context, field graphql.C
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(models.Calender)
 	fc.Result = res
-	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalOCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Event_vote(ctx context.Context, field graphql.CollectedField, obj *models.Event) (ret graphql.Marshaler) {
@@ -1123,7 +2054,7 @@ func (ec *executionContext) _Event_users(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.([]*models.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Group_id(ctx context.Context, field graphql.CollectedField, obj *models.Group) (ret graphql.Marshaler) {
@@ -1186,11 +2117,14 @@ func (ec *executionContext) _Group_name(ctx context.Context, field graphql.Colle
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Group_users(ctx context.Context, field graphql.CollectedField, obj *models.Group) (ret graphql.Marshaler) {
@@ -1222,7 +2156,7 @@ func (ec *executionContext) _Group_users(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.([]models.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1257,11 +2191,854 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(*models.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateUser_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateUser(rctx, args["input"].(model.EditUser))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.User)
+	fc.Result = res
+	return ec.marshalNUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteUser_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteUser(rctx, args["userId"].(uint))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.User)
+	fc.Result = res
+	return ec.marshalNUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createGroup(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createGroup_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateGroup(rctx, args["input"].(model.NewGroup))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Group)
+	fc.Result = res
+	return ec.marshalNGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateGroup(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateGroup_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateGroup(rctx, args["input"].(model.EditGroup))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Group)
+	fc.Result = res
+	return ec.marshalNGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteGroup(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteGroup_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteGroup(rctx, args["groupId"].(uint))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Group)
+	fc.Result = res
+	return ec.marshalNGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createEvent(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createEvent_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateEvent(rctx, args["input"].(model.NewEvent))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Event)
+	fc.Result = res
+	return ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateEvent(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateEvent_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateEvent(rctx, args["input"].(model.EditEvent))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Event)
+	fc.Result = res
+	return ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteEvent(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteEvent_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteEvent(rctx, args["eventId"].(uint))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Event)
+	fc.Result = res
+	return ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createCalender(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createCalender_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateCalender(rctx, args["input"].(model.NewCalender))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Calender)
+	fc.Result = res
+	return ec.marshalNCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateCalender(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateCalender_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateCalender(rctx, args["input"].(model.EditCalender))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Calender)
+	fc.Result = res
+	return ec.marshalNCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteCalender(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteCalender_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteCalender(rctx, args["calenderDate"].(time.Time))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Calender)
+	fc.Result = res
+	return ec.marshalNCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createVote(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createVote_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateVote(rctx, args["input"].(model.NewVote))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Vote)
+	fc.Result = res
+	return ec.marshalNVote2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateVote(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateVote_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateVote(rctx, args["input"].(model.EditVote))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Vote)
+	fc.Result = res
+	return ec.marshalNVote2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteVote(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteVote_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteVote(rctx, args["voteId"].(uint))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Vote)
+	fc.Result = res
+	return ec.marshalNVote2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createOption(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createOption_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateOption(rctx, args["input"].(model.NewOption))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Option)
+	fc.Result = res
+	return ec.marshalNOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateOption(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateOption_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateOption(rctx, args["input"].(model.EditOption))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Option)
+	fc.Result = res
+	return ec.marshalNOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteOption(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteOption_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteOption(rctx, args["optionId"].(uint))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Option)
+	fc.Result = res
+	return ec.marshalNOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createCast(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createCast_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateCast(rctx, args["input"].(model.NewCast))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Cast)
+	fc.Result = res
+	return ec.marshalNCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateCast(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateCast_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateCast(rctx, args["input"].(model.EditCast))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Cast)
+	fc.Result = res
+	return ec.marshalNCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteCast(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteCast_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteCast(rctx, args["castId"].(uint))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Cast)
+	fc.Result = res
+	return ec.marshalNCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Option_id(ctx context.Context, field graphql.CollectedField, obj *models.Option) (ret graphql.Marshaler) {
@@ -1324,11 +3101,14 @@ func (ec *executionContext) _Option_name(ctx context.Context, field graphql.Coll
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Option_vote(ctx context.Context, field graphql.CollectedField, obj *models.Option) (ret graphql.Marshaler) {
@@ -1356,11 +3136,14 @@ func (ec *executionContext) _Option_vote(ctx context.Context, field graphql.Coll
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(models.Vote)
 	fc.Result = res
-	return ec.marshalOVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
+	return ec.marshalNVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Option_casts(ctx context.Context, field graphql.CollectedField, obj *models.Option) (ret graphql.Marshaler) {
@@ -1392,7 +3175,7 @@ func (ec *executionContext) _Option_casts(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.([]models.Cast)
 	fc.Result = res
-	return ec.marshalOCast2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
+	return ec.marshalOCast2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_user(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1434,6 +3217,45 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 	return ec.marshalOUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Query_group(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_group_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Group(rctx, args["id"].(uint))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Group)
+	fc.Result = res
+	return ec.marshalOGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query_event(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -1473,7 +3295,163 @@ func (ec *executionContext) _Query_event(ctx context.Context, field graphql.Coll
 	return ec.marshalOEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Query_users(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+func (ec *executionContext) _Query_calender(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_calender_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Calender(rctx, args["date"].(time.Time))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Calender)
+	fc.Result = res
+	return ec.marshalOCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_vote(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_vote_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Vote(rctx, args["id"].(uint))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Vote)
+	fc.Result = res
+	return ec.marshalOVote2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_option(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_option_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Option(rctx, args["id"].(uint))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Option)
+	fc.Result = res
+	return ec.marshalOOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_cast(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_cast_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Cast(rctx, args["id"].(uint))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Cast)
+	fc.Result = res
+	return ec.marshalOCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_allUsers(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1491,7 +3469,7 @@ func (ec *executionContext) _Query_users(ctx context.Context, field graphql.Coll
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Users(rctx)
+		return ec.resolvers.Query().AllUsers(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1502,10 +3480,10 @@ func (ec *executionContext) _Query_users(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.([]*models.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Query_events(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+func (ec *executionContext) _Query_allGroups(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1523,7 +3501,39 @@ func (ec *executionContext) _Query_events(ctx context.Context, field graphql.Col
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Events(rctx)
+		return ec.resolvers.Query().AllGroups(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Group)
+	fc.Result = res
+	return ec.marshalOGroup2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroupᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_allEvents(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().AllEvents(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1534,7 +3544,124 @@ func (ec *executionContext) _Query_events(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.([]*models.Event)
 	fc.Result = res
-	return ec.marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
+	return ec.marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_monthCalenders(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_monthCalenders_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().MonthCalenders(rctx, args["month"].(time.Time))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Calender)
+	fc.Result = res
+	return ec.marshalOCalender2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalenderᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_allOptions(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_allOptions_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().AllOptions(rctx, args["voteId"].(uint))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Option)
+	fc.Result = res
+	return ec.marshalOOption2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOptionᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_allCasts(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_allCasts_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().AllCasts(rctx, args["optionId"].(uint))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Cast)
+	fc.Result = res
+	return ec.marshalOCast2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1643,38 +3770,6 @@ func (ec *executionContext) _User_id(ctx context.Context, field graphql.Collecte
 	return ec.marshalNUint2uint(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_number(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "User",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Number, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _User_name(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -1700,11 +3795,14 @@ func (ec *executionContext) _User_name(ctx context.Context, field graphql.Collec
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
@@ -1732,11 +3830,14 @@ func (ec *executionContext) _User_email(ctx context.Context, field graphql.Colle
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_grade(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
@@ -1764,11 +3865,14 @@ func (ec *executionContext) _User_grade(ctx context.Context, field graphql.Colle
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(uint)
 	fc.Result = res
-	return ec.marshalOUint2uint(ctx, field.Selections, res)
+	return ec.marshalNUint2uint(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_group(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
@@ -1832,7 +3936,7 @@ func (ec *executionContext) _User_casts(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.([]models.Cast)
 	fc.Result = res
-	return ec.marshalOCast2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
+	return ec.marshalOCast2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_events(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
@@ -1864,7 +3968,7 @@ func (ec *executionContext) _User_events(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.([]*models.Event)
 	fc.Result = res
-	return ec.marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
+	return ec.marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Vote_id(ctx context.Context, field graphql.CollectedField, obj *models.Vote) (ret graphql.Marshaler) {
@@ -1927,11 +4031,14 @@ func (ec *executionContext) _Vote_name(ctx context.Context, field graphql.Collec
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Vote_event(ctx context.Context, field graphql.CollectedField, obj *models.Vote) (ret graphql.Marshaler) {
@@ -1959,11 +4066,14 @@ func (ec *executionContext) _Vote_event(ctx context.Context, field graphql.Colle
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(*models.Event)
 	fc.Result = res
-	return ec.marshalOEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
+	return ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Vote_options(ctx context.Context, field graphql.CollectedField, obj *models.Vote) (ret graphql.Marshaler) {
@@ -1991,11 +4101,14 @@ func (ec *executionContext) _Vote_options(ctx context.Context, field graphql.Col
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.([]models.Option)
 	fc.Result = res
-	return ec.marshalOOption2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
+	return ec.marshalNOption2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOptionᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
@@ -3085,17 +5198,189 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputNewUser(ctx context.Context, obj interface{}) (model.NewUser, error) {
-	var it model.NewUser
+func (ec *executionContext) unmarshalInputEditCalender(ctx context.Context, obj interface{}) (model.EditCalender, error) {
+	var it model.EditCalender
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
 		switch k {
-		case "number":
+		case "date":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("number"))
-			it.Number, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("date"))
+			it.Date, err = ec.unmarshalNTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "holiday":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("holiday"))
+			it.Holiday, err = ec.unmarshalNBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputEditCast(ctx context.Context, obj interface{}) (model.EditCast, error) {
+	var it model.EditCast
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "optionId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("optionId"))
+			it.OptionID, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputEditEvent(ctx context.Context, obj interface{}) (model.EditEvent, error) {
+	var it model.EditEvent
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "place":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("place"))
+			it.Place, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "ownerId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerId"))
+			it.OwnerID, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "date":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("date"))
+			it.Date, err = ec.unmarshalNTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "usersId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("usersId"))
+			it.UsersID, err = ec.unmarshalNUint2ᚕuintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputEditGroup(ctx context.Context, obj interface{}) (model.EditGroup, error) {
+	var it model.EditGroup
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "groupId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("groupId"))
+			it.GroupID, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputEditOption(ctx context.Context, obj interface{}) (model.EditOption, error) {
+	var it model.EditOption
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputEditUser(ctx context.Context, obj interface{}) (model.EditUser, error) {
+	var it model.EditUser
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "userId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
+			it.UserID, err = ec.unmarshalNUint2uint(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3120,6 +5405,278 @@ func (ec *executionContext) unmarshalInputNewUser(ctx context.Context, obj inter
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("grade"))
 			it.Grade, err = ec.unmarshalOUint2ᚖuint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "groupId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("groupId"))
+			it.GroupID, err = ec.unmarshalOUint2ᚖuint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputEditVote(ctx context.Context, obj interface{}) (model.EditVote, error) {
+	var it model.EditVote
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "eventId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("eventId"))
+			it.EventID, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNewCalender(ctx context.Context, obj interface{}) (model.NewCalender, error) {
+	var it model.NewCalender
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "date":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("date"))
+			it.Date, err = ec.unmarshalNTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "holiday":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("holiday"))
+			it.Holiday, err = ec.unmarshalNBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNewCast(ctx context.Context, obj interface{}) (model.NewCast, error) {
+	var it model.NewCast
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "optionId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("optionId"))
+			it.OptionID, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "userId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
+			it.UserID, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNewEvent(ctx context.Context, obj interface{}) (model.NewEvent, error) {
+	var it model.NewEvent
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "place":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("place"))
+			it.Place, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "ownerId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ownerId"))
+			it.OwnerID, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "date":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("date"))
+			it.Date, err = ec.unmarshalNTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "usersId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("usersId"))
+			it.UsersID, err = ec.unmarshalNUint2ᚕuintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNewGroup(ctx context.Context, obj interface{}) (model.NewGroup, error) {
+	var it model.NewGroup
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNewOption(ctx context.Context, obj interface{}) (model.NewOption, error) {
+	var it model.NewOption
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "voteId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("voteId"))
+			it.VoteID, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNewUser(ctx context.Context, obj interface{}) (model.NewUser, error) {
+	var it model.NewUser
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "email":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
+			it.Email, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "grade":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("grade"))
+			it.Grade, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "groupId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("groupId"))
+			it.GroupID, err = ec.unmarshalNUint2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNewVote(ctx context.Context, obj interface{}) (model.NewVote, error) {
+	var it model.NewVote
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "eventId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("eventId"))
+			it.EventID, err = ec.unmarshalNUint2uint(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3155,6 +5712,9 @@ func (ec *executionContext) _Calender(ctx context.Context, sel ast.SelectionSet,
 			}
 		case "weekday":
 			out.Values[i] = ec._Calender_weekday(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "holiday":
 			out.Values[i] = ec._Calender_holiday(ctx, field, obj)
 		case "events":
@@ -3188,8 +5748,14 @@ func (ec *executionContext) _Cast(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "option":
 			out.Values[i] = ec._Cast_option(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "user":
 			out.Values[i] = ec._Cast_user(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3215,25 +5781,25 @@ func (ec *executionContext) _Event(ctx context.Context, sel ast.SelectionSet, ob
 		case "id":
 			out.Values[i] = ec._Event_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "name":
 			out.Values[i] = ec._Event_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "place":
 			out.Values[i] = ec._Event_place(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "owner":
 			out.Values[i] = ec._Event_owner(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "calender":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Event_calender(ctx, field, obj)
-				return res
-			})
+			out.Values[i] = ec._Event_calender(ctx, field, obj)
 		case "vote":
 			out.Values[i] = ec._Event_vote(ctx, field, obj)
 		case "users":
@@ -3267,6 +5833,9 @@ func (ec *executionContext) _Group(ctx context.Context, sel ast.SelectionSet, ob
 			}
 		case "name":
 			out.Values[i] = ec._Group_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "users":
 			out.Values[i] = ec._Group_users(ctx, field, obj)
 		default:
@@ -3297,6 +5866,109 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = graphql.MarshalString("Mutation")
 		case "createUser":
 			out.Values[i] = ec._Mutation_createUser(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateUser":
+			out.Values[i] = ec._Mutation_updateUser(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "deleteUser":
+			out.Values[i] = ec._Mutation_deleteUser(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "createGroup":
+			out.Values[i] = ec._Mutation_createGroup(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateGroup":
+			out.Values[i] = ec._Mutation_updateGroup(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "deleteGroup":
+			out.Values[i] = ec._Mutation_deleteGroup(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "createEvent":
+			out.Values[i] = ec._Mutation_createEvent(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateEvent":
+			out.Values[i] = ec._Mutation_updateEvent(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "deleteEvent":
+			out.Values[i] = ec._Mutation_deleteEvent(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "createCalender":
+			out.Values[i] = ec._Mutation_createCalender(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateCalender":
+			out.Values[i] = ec._Mutation_updateCalender(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "deleteCalender":
+			out.Values[i] = ec._Mutation_deleteCalender(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "createVote":
+			out.Values[i] = ec._Mutation_createVote(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateVote":
+			out.Values[i] = ec._Mutation_updateVote(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "deleteVote":
+			out.Values[i] = ec._Mutation_deleteVote(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "createOption":
+			out.Values[i] = ec._Mutation_createOption(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateOption":
+			out.Values[i] = ec._Mutation_updateOption(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "deleteOption":
+			out.Values[i] = ec._Mutation_deleteOption(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "createCast":
+			out.Values[i] = ec._Mutation_createCast(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateCast":
+			out.Values[i] = ec._Mutation_updateCast(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "deleteCast":
+			out.Values[i] = ec._Mutation_deleteCast(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3326,8 +5998,14 @@ func (ec *executionContext) _Option(ctx context.Context, sel ast.SelectionSet, o
 			}
 		case "name":
 			out.Values[i] = ec._Option_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "vote":
 			out.Values[i] = ec._Option_vote(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "casts":
 			out.Values[i] = ec._Option_casts(ctx, field, obj)
 		default:
@@ -3367,6 +6045,17 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				res = ec._Query_user(ctx, field)
 				return res
 			})
+		case "group":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_group(ctx, field)
+				return res
+			})
 		case "event":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -3378,7 +6067,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				res = ec._Query_event(ctx, field)
 				return res
 			})
-		case "users":
+		case "calender":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
 				defer func() {
@@ -3386,10 +6075,10 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_users(ctx, field)
+				res = ec._Query_calender(ctx, field)
 				return res
 			})
-		case "events":
+		case "vote":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
 				defer func() {
@@ -3397,7 +6086,95 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_events(ctx, field)
+				res = ec._Query_vote(ctx, field)
+				return res
+			})
+		case "option":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_option(ctx, field)
+				return res
+			})
+		case "cast":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_cast(ctx, field)
+				return res
+			})
+		case "allUsers":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_allUsers(ctx, field)
+				return res
+			})
+		case "allGroups":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_allGroups(ctx, field)
+				return res
+			})
+		case "allEvents":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_allEvents(ctx, field)
+				return res
+			})
+		case "monthCalenders":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_monthCalenders(ctx, field)
+				return res
+			})
+		case "allOptions":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_allOptions(ctx, field)
+				return res
+			})
+		case "allCasts":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_allCasts(ctx, field)
 				return res
 			})
 		case "__type":
@@ -3431,14 +6208,21 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "number":
-			out.Values[i] = ec._User_number(ctx, field, obj)
 		case "name":
 			out.Values[i] = ec._User_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "email":
 			out.Values[i] = ec._User_email(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "grade":
 			out.Values[i] = ec._User_grade(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "group":
 			out.Values[i] = ec._User_group(ctx, field, obj)
 		case "casts":
@@ -3474,6 +6258,9 @@ func (ec *executionContext) _Vote(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "name":
 			out.Values[i] = ec._Vote_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		case "event":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -3483,10 +6270,16 @@ func (ec *executionContext) _Vote(ctx context.Context, sel ast.SelectionSet, obj
 					}
 				}()
 				res = ec._Vote_event(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
 				return res
 			})
 		case "options":
 			out.Values[i] = ec._Vote_options(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3758,9 +6551,196 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
+func (ec *executionContext) marshalNCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx context.Context, sel ast.SelectionSet, v models.Calender) graphql.Marshaler {
+	return ec._Calender(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx context.Context, sel ast.SelectionSet, v *models.Calender) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Calender(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx context.Context, sel ast.SelectionSet, v models.Cast) graphql.Marshaler {
+	return ec._Cast(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx context.Context, sel ast.SelectionSet, v *models.Cast) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Cast(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNEditCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditCalender(ctx context.Context, v interface{}) (model.EditCalender, error) {
+	res, err := ec.unmarshalInputEditCalender(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNEditCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditCast(ctx context.Context, v interface{}) (model.EditCast, error) {
+	res, err := ec.unmarshalInputEditCast(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNEditEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditEvent(ctx context.Context, v interface{}) (model.EditEvent, error) {
+	res, err := ec.unmarshalInputEditEvent(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNEditGroup2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditGroup(ctx context.Context, v interface{}) (model.EditGroup, error) {
+	res, err := ec.unmarshalInputEditGroup(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNEditOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditOption(ctx context.Context, v interface{}) (model.EditOption, error) {
+	res, err := ec.unmarshalInputEditOption(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNEditUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditUser(ctx context.Context, v interface{}) (model.EditUser, error) {
+	res, err := ec.unmarshalInputEditUser(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNEditVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditVote(ctx context.Context, v interface{}) (model.EditVote, error) {
+	res, err := ec.unmarshalInputEditVote(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx context.Context, sel ast.SelectionSet, v models.Event) graphql.Marshaler {
+	return ec._Event(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx context.Context, sel ast.SelectionSet, v *models.Event) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Event(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNGroup2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx context.Context, sel ast.SelectionSet, v models.Group) graphql.Marshaler {
+	return ec._Group(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx context.Context, sel ast.SelectionSet, v *models.Group) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Group(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
+	res, err := graphql.UnmarshalInt(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
+	res := graphql.MarshalInt(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+	}
+	return res
+}
+
+func (ec *executionContext) unmarshalNNewCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewCalender(ctx context.Context, v interface{}) (model.NewCalender, error) {
+	res, err := ec.unmarshalInputNewCalender(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNNewCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewCast(ctx context.Context, v interface{}) (model.NewCast, error) {
+	res, err := ec.unmarshalInputNewCast(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNNewEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewEvent(ctx context.Context, v interface{}) (model.NewEvent, error) {
+	res, err := ec.unmarshalInputNewEvent(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNNewGroup2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewGroup(ctx context.Context, v interface{}) (model.NewGroup, error) {
+	res, err := ec.unmarshalInputNewGroup(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNNewOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewOption(ctx context.Context, v interface{}) (model.NewOption, error) {
+	res, err := ec.unmarshalInputNewOption(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNNewUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewUser(ctx context.Context, v interface{}) (model.NewUser, error) {
 	res, err := ec.unmarshalInputNewUser(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNNewVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewVote(ctx context.Context, v interface{}) (model.NewVote, error) {
+	res, err := ec.unmarshalInputNewVote(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx context.Context, sel ast.SelectionSet, v models.Option) graphql.Marshaler {
+	return ec._Option(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNOption2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOptionᚄ(ctx context.Context, sel ast.SelectionSet, v []models.Option) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalNOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx context.Context, sel ast.SelectionSet, v *models.Option) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Option(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
@@ -3806,6 +6786,64 @@ func (ec *executionContext) marshalNUint2uint(ctx context.Context, sel ast.Selec
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) unmarshalNUint2ᚕuintᚄ(ctx context.Context, v interface{}) ([]uint, error) {
+	var vSlice []interface{}
+	if v != nil {
+		if tmp1, ok := v.([]interface{}); ok {
+			vSlice = tmp1
+		} else {
+			vSlice = []interface{}{v}
+		}
+	}
+	var err error
+	res := make([]uint, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNUint2uint(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalNUint2ᚕuintᚄ(ctx context.Context, sel ast.SelectionSet, v []uint) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNUint2uint(ctx, sel, v[i])
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v models.User) graphql.Marshaler {
+	return ec._User(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v *models.User) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._User(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx context.Context, sel ast.SelectionSet, v models.Vote) graphql.Marshaler {
+	return ec._Vote(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNVote2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx context.Context, sel ast.SelectionSet, v *models.Vote) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Vote(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {
@@ -4061,11 +7099,11 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return graphql.MarshalBoolean(*v)
 }
 
-func (ec *executionContext) marshalOCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx context.Context, sel ast.SelectionSet, v models.Cast) graphql.Marshaler {
-	return ec._Cast(ctx, sel, &v)
+func (ec *executionContext) marshalOCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx context.Context, sel ast.SelectionSet, v models.Calender) graphql.Marshaler {
+	return ec._Calender(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOCast2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx context.Context, sel ast.SelectionSet, v []models.Cast) graphql.Marshaler {
+func (ec *executionContext) marshalOCalender2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalenderᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Calender) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -4092,7 +7130,7 @@ func (ec *executionContext) marshalOCast2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋcl
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, sel, v[i])
+			ret[i] = ec.marshalNCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4105,11 +7143,14 @@ func (ec *executionContext) marshalOCast2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋcl
 	return ret
 }
 
-func (ec *executionContext) marshalOEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx context.Context, sel ast.SelectionSet, v models.Event) graphql.Marshaler {
-	return ec._Event(ctx, sel, &v)
+func (ec *executionContext) marshalOCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx context.Context, sel ast.SelectionSet, v *models.Calender) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Calender(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOEvent2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx context.Context, sel ast.SelectionSet, v []models.Event) graphql.Marshaler {
+func (ec *executionContext) marshalOCast2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx context.Context, sel ast.SelectionSet, v []models.Cast) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -4136,7 +7177,7 @@ func (ec *executionContext) marshalOEvent2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋc
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, sel, v[i])
+			ret[i] = ec.marshalNCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4149,7 +7190,7 @@ func (ec *executionContext) marshalOEvent2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋc
 	return ret
 }
 
-func (ec *executionContext) marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx context.Context, sel ast.SelectionSet, v []*models.Event) graphql.Marshaler {
+func (ec *executionContext) marshalOCast2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Cast) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -4176,7 +7217,94 @@ func (ec *executionContext) marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiHPTeam�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, sel, v[i])
+			ret[i] = ec.marshalNCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalOCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx context.Context, sel ast.SelectionSet, v *models.Cast) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Cast(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOEvent2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx context.Context, sel ast.SelectionSet, v []models.Event) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Event) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4200,20 +7328,7 @@ func (ec *executionContext) marshalOGroup2githubᚗcomᚋkougakusaiHPTeamᚋclub
 	return ec._Group(ctx, sel, &v)
 }
 
-func (ec *executionContext) unmarshalOInt2int(ctx context.Context, v interface{}) (int, error) {
-	res, err := graphql.UnmarshalInt(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
-	return graphql.MarshalInt(v)
-}
-
-func (ec *executionContext) marshalOOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx context.Context, sel ast.SelectionSet, v models.Option) graphql.Marshaler {
-	return ec._Option(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalOOption2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx context.Context, sel ast.SelectionSet, v []models.Option) graphql.Marshaler {
+func (ec *executionContext) marshalOGroup2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroupᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Group) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -4240,7 +7355,7 @@ func (ec *executionContext) marshalOOption2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋ
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, sel, v[i])
+			ret[i] = ec.marshalNGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4251,6 +7366,60 @@ func (ec *executionContext) marshalOOption2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋ
 	}
 	wg.Wait()
 	return ret
+}
+
+func (ec *executionContext) marshalOGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx context.Context, sel ast.SelectionSet, v *models.Group) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Group(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOOption2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOptionᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Option) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalOOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx context.Context, sel ast.SelectionSet, v *models.Option) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Option(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOString2string(ctx context.Context, v interface{}) (string, error) {
@@ -4277,30 +7446,6 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	return graphql.MarshalString(*v)
 }
 
-func (ec *executionContext) unmarshalOTime2ᚖtimeᚐTime(ctx context.Context, v interface{}) (*time.Time, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := graphql.UnmarshalTime(v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOTime2ᚖtimeᚐTime(ctx context.Context, sel ast.SelectionSet, v *time.Time) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalTime(*v)
-}
-
-func (ec *executionContext) unmarshalOUint2uint(ctx context.Context, v interface{}) (uint, error) {
-	res, err := model.UnmarshalUint(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOUint2uint(ctx context.Context, sel ast.SelectionSet, v uint) graphql.Marshaler {
-	return model.MarshalUint(v)
-}
-
 func (ec *executionContext) unmarshalOUint2ᚖuint(ctx context.Context, v interface{}) (*uint, error) {
 	if v == nil {
 		return nil, nil
@@ -4316,11 +7461,7 @@ func (ec *executionContext) marshalOUint2ᚖuint(ctx context.Context, sel ast.Se
 	return model.MarshalUint(*v)
 }
 
-func (ec *executionContext) marshalOUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v models.User) graphql.Marshaler {
-	return ec._User(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalOUser2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v []models.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []models.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -4347,7 +7488,7 @@ func (ec *executionContext) marshalOUser2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋcl
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, sel, v[i])
+			ret[i] = ec.marshalNUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4360,7 +7501,7 @@ func (ec *executionContext) marshalOUser2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋcl
 	return ret
 }
 
-func (ec *executionContext) marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v []*models.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -4387,7 +7528,7 @@ func (ec *executionContext) marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiHPTeam�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, sel, v[i])
+			ret[i] = ec.marshalNUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4409,6 +7550,13 @@ func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋcl
 
 func (ec *executionContext) marshalOVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx context.Context, sel ast.SelectionSet, v models.Vote) graphql.Marshaler {
 	return ec._Vote(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalOVote2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx context.Context, sel ast.SelectionSet, v *models.Vote) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Vote(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValueᚄ(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {
