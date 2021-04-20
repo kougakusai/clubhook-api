@@ -32,7 +32,7 @@ $ docker-compose exec app go run main.go
 $ docker-compose exec app /bin/bash
 $ go run main.go
 # Access to "localhost:8000"
-$exit
+$ exit
 
 $docker-compose down
 ```

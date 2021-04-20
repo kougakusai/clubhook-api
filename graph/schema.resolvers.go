@@ -25,7 +25,7 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 	if err := res.Error; err != nil {
 		return nil, err
 	}
-	res = r.DB.Preload("Group").Find(&user)
+	res = r.DB.Preload(clause.Associations).Find(&user)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input model.EditUser)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
-	res = r.DB.Preload("Group").First(&user, input.UserID)
+	res = r.DB.Preload(clause.Associations).First(&user, input.UserID)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
@@ -56,7 +56,14 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input model.EditUser)
 
 func (r *mutationResolver) DeleteUser(ctx context.Context, userID uint) (*models.User, error) {
 	var user models.User
-	res := r.DB.Delete(&user, userID)
+	res := r.DB.First(&user, userID)
+	if err := res.Error; err != nil {
+		return nil, err
+	}
+	if err := r.DB.Model(&user).Association("Events").Clear(); err != nil {
+		return nil, err
+	}
+	res = r.DB.Delete(&user, userID)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
@@ -71,7 +78,7 @@ func (r *mutationResolver) CreateGroup(ctx context.Context, input model.NewGroup
 	if err := res.Error; err != nil {
 		return nil, err
 	}
-	res = r.DB.Preload("Users").First(&group)
+	res = r.DB.Preload(clause.Associations).First(&group)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
@@ -88,7 +95,7 @@ func (r *mutationResolver) UpdateGroup(ctx context.Context, input model.EditGrou
 	if err := res.Error; err != nil {
 		return nil, err
 	}
-	res = r.DB.Preload("Users").First(&group, input.GroupID)
+	res = r.DB.Preload(clause.Associations).First(&group, input.GroupID)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
@@ -224,6 +231,10 @@ func (r *mutationResolver) CreateVote(ctx context.Context, input model.NewVote) 
 	if err := res.Error; err != nil {
 		return nil, err
 	}
+	res = r.DB.Preload(clause.Associations).Find(&vote)
+	if err := res.Error; err != nil {
+		return nil, err
+	}
 	return &vote, nil
 }
 
@@ -237,6 +248,10 @@ func (r *mutationResolver) UpdateVote(ctx context.Context, input model.EditVote)
 		Name:    input.Name,
 		EventID: input.EventID,
 	})
+	if err := res.Error; err != nil {
+		return nil, err
+	}
+	res = r.DB.Preload(clause.Associations).Find(&vote)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
@@ -261,7 +276,7 @@ func (r *mutationResolver) CreateOption(ctx context.Context, input model.NewOpti
 	if err := res.Error; err != nil {
 		return nil, err
 	}
-	res = r.DB.Preload("Vote").Find(&option)
+	res = r.DB.Preload(clause.Associations).Find(&option)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
@@ -278,7 +293,7 @@ func (r *mutationResolver) UpdateOption(ctx context.Context, input model.EditOpt
 	if err := res.Error; err != nil {
 		return nil, err
 	}
-	res = r.DB.Preload("Vote").Find(&option)
+	res = r.DB.Preload(clause.Associations).Find(&option)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
@@ -338,7 +353,7 @@ func (r *mutationResolver) DeleteCast(ctx context.Context, castID uint) (*models
 
 func (r *queryResolver) User(ctx context.Context, id uint) (*models.User, error) {
 	var user models.User
-	res := r.DB.Preload("Group").First(&user, id)
+	res := r.DB.Preload(clause.Associations).First(&user, id)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
@@ -374,7 +389,7 @@ func (r *queryResolver) Calender(ctx context.Context, date time.Time) (*models.C
 
 func (r *queryResolver) Vote(ctx context.Context, id uint) (*models.Vote, error) {
 	var vote models.Vote
-	res := r.DB.First(&vote, id)
+	res := r.DB.Preload(clause.Associations).First(&vote, id)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
@@ -383,7 +398,7 @@ func (r *queryResolver) Vote(ctx context.Context, id uint) (*models.Vote, error)
 
 func (r *queryResolver) Option(ctx context.Context, id uint) (*models.Option, error) {
 	var option models.Option
-	res := r.DB.Preload("Vote").First(&option, id)
+	res := r.DB.Preload(clause.Associations).First(&option, id)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
@@ -401,7 +416,7 @@ func (r *queryResolver) Cast(ctx context.Context, id uint) (*models.Cast, error)
 
 func (r *queryResolver) AllUsers(ctx context.Context) ([]*models.User, error) {
 	var users []*models.User
-	res := r.DB.Preload("Group").Find(&users)
+	res := r.DB.Preload(clause.Associations).Find(&users)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
@@ -465,7 +480,7 @@ func (r *queryResolver) AllCasts(ctx context.Context, optionID uint) ([]*models.
 
 func (r *voteResolver) Event(ctx context.Context, obj *models.Vote) (*models.Event, error) {
 	var event models.Event
-	res := r.DB.Preload("Owner").Preload("Calender").Preload("Users").First(&event, obj.EventID)
+	res := r.DB.Preload(clause.Associations).First(&event, obj.EventID)
 	if err := res.Error; err != nil {
 		return nil, err
 	}
