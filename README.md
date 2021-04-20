@@ -11,7 +11,7 @@ Docker(docker-compose)で開発環境を用意する場合はgit cloneで、
 
 ```
 $ git clone https://github.com/kougakusaiHPTeam/clubhook-api.git
-$ cd Clubhook
+$ cd clubhook-api
 ```
 
 #### go get
@@ -32,10 +32,9 @@ $ docker-compose exec app go run main.go
 $ docker-compose exec app /bin/bash
 $ go run main.go
 # Access to "localhost:8000"
-$exit
+$ exit
 
-$docker-compose stop
-$docker-compose rm
+$docker-compose down
 ```
 
 #### VSCodeでDevContainerを起動し開発する場合

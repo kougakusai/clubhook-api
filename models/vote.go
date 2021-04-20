@@ -1,6 +1,10 @@
 package models
 
+import "gorm.io/gorm"
+
 type Vote struct {
-	ID   int
-	Name string
+	gorm.Model
+	Name    string
+	EventID uint     // foreign key
+	Options []Option // Vote has many Option
 }

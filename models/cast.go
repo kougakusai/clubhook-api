@@ -1,5 +1,11 @@
 package models
 
+import "gorm.io/gorm"
+
 type Cast struct {
-	User_id int
+	gorm.Model
+	OptionID uint   // foreign key
+	UserID   uint   // foreign key
+	Option   Option // Cast belongs to Option
+	User     User   // Cast belongs to User
 }
