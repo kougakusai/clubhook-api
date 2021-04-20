@@ -1,6 +1,9 @@
 package models
 
+import "gorm.io/gorm"
+
 type Group struct {
-	ID   int
-	Name string
+	gorm.Model
+	Name  string
+	Users []User // Group has many User
 }
