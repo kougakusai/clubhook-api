@@ -7,9 +7,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/kougakusaiHPTeam/clubhook-api/graph/generated"
-	"github.com/kougakusaiHPTeam/clubhook-api/graph/model"
-	"github.com/kougakusaiHPTeam/clubhook-api/models"
+	"github.com/kougakusai/clubhook-api/graph/generated"
+	"github.com/kougakusai/clubhook-api/graph/model"
+	"github.com/kougakusai/clubhook-api/models"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

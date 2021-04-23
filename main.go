@@ -11,10 +11,10 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/kougakusaiHPTeam/clubhook-api/graph"
-	"github.com/kougakusaiHPTeam/clubhook-api/graph/generated"
+	"github.com/kougakusai/clubhook-api/graph"
+	"github.com/kougakusai/clubhook-api/graph/generated"
 
-	"github.com/kougakusaiHPTeam/clubhook-api/db"
+	"github.com/kougakusai/clubhook-api/db"
 )
 
 func main() {

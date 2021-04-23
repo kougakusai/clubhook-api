@@ -2,13 +2,13 @@
 FROM golang:1.16.0
 
 # コンテナ内にディレクトリを作成
-RUN mkdir -p /go/src/github.com/kougakusaiHPTeam/clubhook-api
+RUN mkdir -p /go/src/github.com/kougakusai/clubhook-api
 
 # コンテナログイン時のディレクトリを設定
-WORKDIR /go/src/github.com/kougakusaiHPTeam/clubhook-api
+WORKDIR /go/src/github.com/kougakusai/clubhook-api
 
 # ホストのファイルをコンテナにコピー
-ADD . /go/src/github.com/kougakusaiHPTeam/clubhook-api
+ADD . /go/src/github.com/kougakusai/clubhook-api
 
 # 使用するモジュールのインストール
 RUN go get github.com/labstack/echo && go get gorm.io/gorm && go get github.com/99designs/gqlgen

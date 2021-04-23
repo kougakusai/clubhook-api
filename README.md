@@ -10,14 +10,14 @@ Docker(docker-compose)で開発環境を用意する場合はgit cloneで、
 #### Clone Repository
 
 ```
-$ git clone https://github.com/kougakusaiHPTeam/clubhook-api.git
+$ git clone https://github.com/kougakusai/clubhook-api.git
 $ cd clubhook-api
 ```
 
 #### go get
 
 ```
-$ go get github.com/kougakusaiHPTeam/clubhook-api
+$ go get github.com/kougakusai/clubhook-api
 ```
 
 #### Docker(docker-compose)で実行する場合

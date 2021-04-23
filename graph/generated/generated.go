@@ -13,8 +13,8 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/kougakusaiHPTeam/clubhook-api/graph/model"
-	"github.com/kougakusaiHPTeam/clubhook-api/models"
+	"github.com/kougakusai/clubhook-api/graph/model"
+	"github.com/kougakusai/clubhook-api/models"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -1070,7 +1070,7 @@ func (ec *executionContext) field_Mutation_createCalender_args(ctx context.Conte
 	var arg0 model.NewCalender
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewCalender(ctx, tmp)
+		arg0, err = ec.unmarshalNNewCalender2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewCalender(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1085,7 +1085,7 @@ func (ec *executionContext) field_Mutation_createCast_args(ctx context.Context, 
 	var arg0 model.NewCast
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewCast(ctx, tmp)
+		arg0, err = ec.unmarshalNNewCast2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewCast(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1100,7 +1100,7 @@ func (ec *executionContext) field_Mutation_createEvent_args(ctx context.Context,
 	var arg0 model.NewEvent
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewEvent(ctx, tmp)
+		arg0, err = ec.unmarshalNNewEvent2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewEvent(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1115,7 +1115,7 @@ func (ec *executionContext) field_Mutation_createGroup_args(ctx context.Context,
 	var arg0 model.NewGroup
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewGroup2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewGroup(ctx, tmp)
+		arg0, err = ec.unmarshalNNewGroup2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewGroup(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1130,7 +1130,7 @@ func (ec *executionContext) field_Mutation_createOption_args(ctx context.Context
 	var arg0 model.NewOption
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewOption(ctx, tmp)
+		arg0, err = ec.unmarshalNNewOption2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewOption(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1145,7 +1145,7 @@ func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, 
 	var arg0 model.NewUser
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewUser(ctx, tmp)
+		arg0, err = ec.unmarshalNNewUser2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewUser(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1160,7 +1160,7 @@ func (ec *executionContext) field_Mutation_createVote_args(ctx context.Context, 
 	var arg0 model.NewVote
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewVote(ctx, tmp)
+		arg0, err = ec.unmarshalNNewVote2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewVote(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1280,7 +1280,7 @@ func (ec *executionContext) field_Mutation_updateCalender_args(ctx context.Conte
 	var arg0 model.EditCalender
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNEditCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditCalender(ctx, tmp)
+		arg0, err = ec.unmarshalNEditCalender2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditCalender(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1295,7 +1295,7 @@ func (ec *executionContext) field_Mutation_updateCast_args(ctx context.Context, 
 	var arg0 model.EditCast
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNEditCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditCast(ctx, tmp)
+		arg0, err = ec.unmarshalNEditCast2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditCast(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1310,7 +1310,7 @@ func (ec *executionContext) field_Mutation_updateEvent_args(ctx context.Context,
 	var arg0 model.EditEvent
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNEditEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditEvent(ctx, tmp)
+		arg0, err = ec.unmarshalNEditEvent2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditEvent(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1325,7 +1325,7 @@ func (ec *executionContext) field_Mutation_updateGroup_args(ctx context.Context,
 	var arg0 model.EditGroup
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNEditGroup2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditGroup(ctx, tmp)
+		arg0, err = ec.unmarshalNEditGroup2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditGroup(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1340,7 +1340,7 @@ func (ec *executionContext) field_Mutation_updateOption_args(ctx context.Context
 	var arg0 model.EditOption
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNEditOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditOption(ctx, tmp)
+		arg0, err = ec.unmarshalNEditOption2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditOption(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1355,7 +1355,7 @@ func (ec *executionContext) field_Mutation_updateUser_args(ctx context.Context, 
 	var arg0 model.EditUser
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNEditUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditUser(ctx, tmp)
+		arg0, err = ec.unmarshalNEditUser2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditUser(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1370,7 +1370,7 @@ func (ec *executionContext) field_Mutation_updateVote_args(ctx context.Context, 
 	var arg0 model.EditVote
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNEditVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditVote(ctx, tmp)
+		arg0, err = ec.unmarshalNEditVote2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditVote(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1713,7 +1713,7 @@ func (ec *executionContext) _Calender_events(ctx context.Context, field graphql.
 	}
 	res := resTmp.([]models.Event)
 	fc.Result = res
-	return ec.marshalOEvent2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx, field.Selections, res)
+	return ec.marshalOEvent2ᚕgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Cast_id(ctx context.Context, field graphql.CollectedField, obj *models.Cast) (ret graphql.Marshaler) {
@@ -1783,7 +1783,7 @@ func (ec *executionContext) _Cast_option(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.(models.Option)
 	fc.Result = res
-	return ec.marshalNOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
+	return ec.marshalNOption2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Cast_user(ctx context.Context, field graphql.CollectedField, obj *models.Cast) (ret graphql.Marshaler) {
@@ -1818,7 +1818,7 @@ func (ec *executionContext) _Cast_user(ctx context.Context, field graphql.Collec
 	}
 	res := resTmp.(models.User)
 	fc.Result = res
-	return ec.marshalNUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Event_id(ctx context.Context, field graphql.CollectedField, obj *models.Event) (ret graphql.Marshaler) {
@@ -1958,7 +1958,7 @@ func (ec *executionContext) _Event_owner(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.(models.User)
 	fc.Result = res
-	return ec.marshalNUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Event_calender(ctx context.Context, field graphql.CollectedField, obj *models.Event) (ret graphql.Marshaler) {
@@ -1990,7 +1990,7 @@ func (ec *executionContext) _Event_calender(ctx context.Context, field graphql.C
 	}
 	res := resTmp.(models.Calender)
 	fc.Result = res
-	return ec.marshalOCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
+	return ec.marshalOCalender2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Event_vote(ctx context.Context, field graphql.CollectedField, obj *models.Event) (ret graphql.Marshaler) {
@@ -2022,7 +2022,7 @@ func (ec *executionContext) _Event_vote(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(models.Vote)
 	fc.Result = res
-	return ec.marshalOVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
+	return ec.marshalOVote2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Event_users(ctx context.Context, field graphql.CollectedField, obj *models.Event) (ret graphql.Marshaler) {
@@ -2054,7 +2054,7 @@ func (ec *executionContext) _Event_users(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.([]*models.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Group_id(ctx context.Context, field graphql.CollectedField, obj *models.Group) (ret graphql.Marshaler) {
@@ -2156,7 +2156,7 @@ func (ec *executionContext) _Group_users(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.([]models.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚕgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2198,7 +2198,7 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 	}
 	res := resTmp.(*models.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_updateUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2240,7 +2240,7 @@ func (ec *executionContext) _Mutation_updateUser(ctx context.Context, field grap
 	}
 	res := resTmp.(*models.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_deleteUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2282,7 +2282,7 @@ func (ec *executionContext) _Mutation_deleteUser(ctx context.Context, field grap
 	}
 	res := resTmp.(*models.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createGroup(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2324,7 +2324,7 @@ func (ec *executionContext) _Mutation_createGroup(ctx context.Context, field gra
 	}
 	res := resTmp.(*models.Group)
 	fc.Result = res
-	return ec.marshalNGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
+	return ec.marshalNGroup2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_updateGroup(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2366,7 +2366,7 @@ func (ec *executionContext) _Mutation_updateGroup(ctx context.Context, field gra
 	}
 	res := resTmp.(*models.Group)
 	fc.Result = res
-	return ec.marshalNGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
+	return ec.marshalNGroup2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_deleteGroup(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2408,7 +2408,7 @@ func (ec *executionContext) _Mutation_deleteGroup(ctx context.Context, field gra
 	}
 	res := resTmp.(*models.Group)
 	fc.Result = res
-	return ec.marshalNGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
+	return ec.marshalNGroup2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createEvent(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2450,7 +2450,7 @@ func (ec *executionContext) _Mutation_createEvent(ctx context.Context, field gra
 	}
 	res := resTmp.(*models.Event)
 	fc.Result = res
-	return ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
+	return ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_updateEvent(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2492,7 +2492,7 @@ func (ec *executionContext) _Mutation_updateEvent(ctx context.Context, field gra
 	}
 	res := resTmp.(*models.Event)
 	fc.Result = res
-	return ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
+	return ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_deleteEvent(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2534,7 +2534,7 @@ func (ec *executionContext) _Mutation_deleteEvent(ctx context.Context, field gra
 	}
 	res := resTmp.(*models.Event)
 	fc.Result = res
-	return ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
+	return ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createCalender(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2576,7 +2576,7 @@ func (ec *executionContext) _Mutation_createCalender(ctx context.Context, field 
 	}
 	res := resTmp.(*models.Calender)
 	fc.Result = res
-	return ec.marshalNCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
+	return ec.marshalNCalender2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_updateCalender(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2618,7 +2618,7 @@ func (ec *executionContext) _Mutation_updateCalender(ctx context.Context, field 
 	}
 	res := resTmp.(*models.Calender)
 	fc.Result = res
-	return ec.marshalNCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
+	return ec.marshalNCalender2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_deleteCalender(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2660,7 +2660,7 @@ func (ec *executionContext) _Mutation_deleteCalender(ctx context.Context, field 
 	}
 	res := resTmp.(*models.Calender)
 	fc.Result = res
-	return ec.marshalNCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
+	return ec.marshalNCalender2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createVote(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2702,7 +2702,7 @@ func (ec *executionContext) _Mutation_createVote(ctx context.Context, field grap
 	}
 	res := resTmp.(*models.Vote)
 	fc.Result = res
-	return ec.marshalNVote2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
+	return ec.marshalNVote2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_updateVote(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2744,7 +2744,7 @@ func (ec *executionContext) _Mutation_updateVote(ctx context.Context, field grap
 	}
 	res := resTmp.(*models.Vote)
 	fc.Result = res
-	return ec.marshalNVote2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
+	return ec.marshalNVote2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_deleteVote(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2786,7 +2786,7 @@ func (ec *executionContext) _Mutation_deleteVote(ctx context.Context, field grap
 	}
 	res := resTmp.(*models.Vote)
 	fc.Result = res
-	return ec.marshalNVote2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
+	return ec.marshalNVote2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createOption(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2828,7 +2828,7 @@ func (ec *executionContext) _Mutation_createOption(ctx context.Context, field gr
 	}
 	res := resTmp.(*models.Option)
 	fc.Result = res
-	return ec.marshalNOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
+	return ec.marshalNOption2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_updateOption(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2870,7 +2870,7 @@ func (ec *executionContext) _Mutation_updateOption(ctx context.Context, field gr
 	}
 	res := resTmp.(*models.Option)
 	fc.Result = res
-	return ec.marshalNOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
+	return ec.marshalNOption2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_deleteOption(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2912,7 +2912,7 @@ func (ec *executionContext) _Mutation_deleteOption(ctx context.Context, field gr
 	}
 	res := resTmp.(*models.Option)
 	fc.Result = res
-	return ec.marshalNOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
+	return ec.marshalNOption2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createCast(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2954,7 +2954,7 @@ func (ec *executionContext) _Mutation_createCast(ctx context.Context, field grap
 	}
 	res := resTmp.(*models.Cast)
 	fc.Result = res
-	return ec.marshalNCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
+	return ec.marshalNCast2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_updateCast(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2996,7 +2996,7 @@ func (ec *executionContext) _Mutation_updateCast(ctx context.Context, field grap
 	}
 	res := resTmp.(*models.Cast)
 	fc.Result = res
-	return ec.marshalNCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
+	return ec.marshalNCast2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_deleteCast(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3038,7 +3038,7 @@ func (ec *executionContext) _Mutation_deleteCast(ctx context.Context, field grap
 	}
 	res := resTmp.(*models.Cast)
 	fc.Result = res
-	return ec.marshalNCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
+	return ec.marshalNCast2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Option_id(ctx context.Context, field graphql.CollectedField, obj *models.Option) (ret graphql.Marshaler) {
@@ -3143,7 +3143,7 @@ func (ec *executionContext) _Option_vote(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.(models.Vote)
 	fc.Result = res
-	return ec.marshalNVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
+	return ec.marshalNVote2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Option_casts(ctx context.Context, field graphql.CollectedField, obj *models.Option) (ret graphql.Marshaler) {
@@ -3175,7 +3175,7 @@ func (ec *executionContext) _Option_casts(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.([]models.Cast)
 	fc.Result = res
-	return ec.marshalOCast2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx, field.Selections, res)
+	return ec.marshalOCast2ᚕgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_user(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3214,7 +3214,7 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(*models.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_group(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3253,7 +3253,7 @@ func (ec *executionContext) _Query_group(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.(*models.Group)
 	fc.Result = res
-	return ec.marshalOGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
+	return ec.marshalOGroup2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_event(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3292,7 +3292,7 @@ func (ec *executionContext) _Query_event(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.(*models.Event)
 	fc.Result = res
-	return ec.marshalOEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
+	return ec.marshalOEvent2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_calender(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3331,7 +3331,7 @@ func (ec *executionContext) _Query_calender(ctx context.Context, field graphql.C
 	}
 	res := resTmp.(*models.Calender)
 	fc.Result = res
-	return ec.marshalOCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
+	return ec.marshalOCalender2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_vote(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3370,7 +3370,7 @@ func (ec *executionContext) _Query_vote(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(*models.Vote)
 	fc.Result = res
-	return ec.marshalOVote2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
+	return ec.marshalOVote2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐVote(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_option(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3409,7 +3409,7 @@ func (ec *executionContext) _Query_option(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.(*models.Option)
 	fc.Result = res
-	return ec.marshalOOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
+	return ec.marshalOOption2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOption(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_cast(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3448,7 +3448,7 @@ func (ec *executionContext) _Query_cast(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(*models.Cast)
 	fc.Result = res
-	return ec.marshalOCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
+	return ec.marshalOCast2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCast(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_allUsers(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3480,7 +3480,7 @@ func (ec *executionContext) _Query_allUsers(ctx context.Context, field graphql.C
 	}
 	res := resTmp.([]*models.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_allGroups(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3512,7 +3512,7 @@ func (ec *executionContext) _Query_allGroups(ctx context.Context, field graphql.
 	}
 	res := resTmp.([]*models.Group)
 	fc.Result = res
-	return ec.marshalOGroup2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroupᚄ(ctx, field.Selections, res)
+	return ec.marshalOGroup2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐGroupᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_allEvents(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3544,7 +3544,7 @@ func (ec *executionContext) _Query_allEvents(ctx context.Context, field graphql.
 	}
 	res := resTmp.([]*models.Event)
 	fc.Result = res
-	return ec.marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx, field.Selections, res)
+	return ec.marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_monthCalenders(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3583,7 +3583,7 @@ func (ec *executionContext) _Query_monthCalenders(ctx context.Context, field gra
 	}
 	res := resTmp.([]*models.Calender)
 	fc.Result = res
-	return ec.marshalOCalender2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalenderᚄ(ctx, field.Selections, res)
+	return ec.marshalOCalender2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCalenderᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_allOptions(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3622,7 +3622,7 @@ func (ec *executionContext) _Query_allOptions(ctx context.Context, field graphql
 	}
 	res := resTmp.([]*models.Option)
 	fc.Result = res
-	return ec.marshalOOption2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOptionᚄ(ctx, field.Selections, res)
+	return ec.marshalOOption2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOptionᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_allCasts(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3661,7 +3661,7 @@ func (ec *executionContext) _Query_allCasts(ctx context.Context, field graphql.C
 	}
 	res := resTmp.([]*models.Cast)
 	fc.Result = res
-	return ec.marshalOCast2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx, field.Selections, res)
+	return ec.marshalOCast2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3904,7 +3904,7 @@ func (ec *executionContext) _User_group(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(models.Group)
 	fc.Result = res
-	return ec.marshalOGroup2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
+	return ec.marshalOGroup2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_casts(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
@@ -3936,7 +3936,7 @@ func (ec *executionContext) _User_casts(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.([]models.Cast)
 	fc.Result = res
-	return ec.marshalOCast2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx, field.Selections, res)
+	return ec.marshalOCast2ᚕgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_events(ctx context.Context, field graphql.CollectedField, obj *models.User) (ret graphql.Marshaler) {
@@ -3968,7 +3968,7 @@ func (ec *executionContext) _User_events(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.([]*models.Event)
 	fc.Result = res
-	return ec.marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx, field.Selections, res)
+	return ec.marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Vote_id(ctx context.Context, field graphql.CollectedField, obj *models.Vote) (ret graphql.Marshaler) {
@@ -4073,7 +4073,7 @@ func (ec *executionContext) _Vote_event(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(*models.Event)
 	fc.Result = res
-	return ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
+	return ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Vote_options(ctx context.Context, field graphql.CollectedField, obj *models.Vote) (ret graphql.Marshaler) {
@@ -4108,7 +4108,7 @@ func (ec *executionContext) _Vote_options(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.([]models.Option)
 	fc.Result = res
-	return ec.marshalNOption2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOptionᚄ(ctx, field.Selections, res)
+	return ec.marshalNOption2ᚕgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOptionᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
@@ -6551,11 +6551,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx context.Context, sel ast.SelectionSet, v models.Calender) graphql.Marshaler {
+func (ec *executionContext) marshalNCalender2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCalender(ctx context.Context, sel ast.SelectionSet, v models.Calender) graphql.Marshaler {
 	return ec._Calender(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx context.Context, sel ast.SelectionSet, v *models.Calender) graphql.Marshaler {
+func (ec *executionContext) marshalNCalender2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCalender(ctx context.Context, sel ast.SelectionSet, v *models.Calender) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -6565,11 +6565,11 @@ func (ec *executionContext) marshalNCalender2ᚖgithubᚗcomᚋkougakusaiHPTeam�
 	return ec._Calender(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx context.Context, sel ast.SelectionSet, v models.Cast) graphql.Marshaler {
+func (ec *executionContext) marshalNCast2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCast(ctx context.Context, sel ast.SelectionSet, v models.Cast) graphql.Marshaler {
 	return ec._Cast(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx context.Context, sel ast.SelectionSet, v *models.Cast) graphql.Marshaler {
+func (ec *executionContext) marshalNCast2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCast(ctx context.Context, sel ast.SelectionSet, v *models.Cast) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -6579,46 +6579,46 @@ func (ec *executionContext) marshalNCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋcl
 	return ec._Cast(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNEditCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditCalender(ctx context.Context, v interface{}) (model.EditCalender, error) {
+func (ec *executionContext) unmarshalNEditCalender2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditCalender(ctx context.Context, v interface{}) (model.EditCalender, error) {
 	res, err := ec.unmarshalInputEditCalender(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNEditCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditCast(ctx context.Context, v interface{}) (model.EditCast, error) {
+func (ec *executionContext) unmarshalNEditCast2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditCast(ctx context.Context, v interface{}) (model.EditCast, error) {
 	res, err := ec.unmarshalInputEditCast(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNEditEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditEvent(ctx context.Context, v interface{}) (model.EditEvent, error) {
+func (ec *executionContext) unmarshalNEditEvent2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditEvent(ctx context.Context, v interface{}) (model.EditEvent, error) {
 	res, err := ec.unmarshalInputEditEvent(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNEditGroup2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditGroup(ctx context.Context, v interface{}) (model.EditGroup, error) {
+func (ec *executionContext) unmarshalNEditGroup2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditGroup(ctx context.Context, v interface{}) (model.EditGroup, error) {
 	res, err := ec.unmarshalInputEditGroup(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNEditOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditOption(ctx context.Context, v interface{}) (model.EditOption, error) {
+func (ec *executionContext) unmarshalNEditOption2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditOption(ctx context.Context, v interface{}) (model.EditOption, error) {
 	res, err := ec.unmarshalInputEditOption(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNEditUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditUser(ctx context.Context, v interface{}) (model.EditUser, error) {
+func (ec *executionContext) unmarshalNEditUser2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditUser(ctx context.Context, v interface{}) (model.EditUser, error) {
 	res, err := ec.unmarshalInputEditUser(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNEditVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐEditVote(ctx context.Context, v interface{}) (model.EditVote, error) {
+func (ec *executionContext) unmarshalNEditVote2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐEditVote(ctx context.Context, v interface{}) (model.EditVote, error) {
 	res, err := ec.unmarshalInputEditVote(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx context.Context, sel ast.SelectionSet, v models.Event) graphql.Marshaler {
+func (ec *executionContext) marshalNEvent2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEvent(ctx context.Context, sel ast.SelectionSet, v models.Event) graphql.Marshaler {
 	return ec._Event(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx context.Context, sel ast.SelectionSet, v *models.Event) graphql.Marshaler {
+func (ec *executionContext) marshalNEvent2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEvent(ctx context.Context, sel ast.SelectionSet, v *models.Event) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -6628,11 +6628,11 @@ func (ec *executionContext) marshalNEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋc
 	return ec._Event(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNGroup2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx context.Context, sel ast.SelectionSet, v models.Group) graphql.Marshaler {
+func (ec *executionContext) marshalNGroup2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐGroup(ctx context.Context, sel ast.SelectionSet, v models.Group) graphql.Marshaler {
 	return ec._Group(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx context.Context, sel ast.SelectionSet, v *models.Group) graphql.Marshaler {
+func (ec *executionContext) marshalNGroup2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐGroup(ctx context.Context, sel ast.SelectionSet, v *models.Group) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -6657,46 +6657,46 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 	return res
 }
 
-func (ec *executionContext) unmarshalNNewCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewCalender(ctx context.Context, v interface{}) (model.NewCalender, error) {
+func (ec *executionContext) unmarshalNNewCalender2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewCalender(ctx context.Context, v interface{}) (model.NewCalender, error) {
 	res, err := ec.unmarshalInputNewCalender(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNNewCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewCast(ctx context.Context, v interface{}) (model.NewCast, error) {
+func (ec *executionContext) unmarshalNNewCast2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewCast(ctx context.Context, v interface{}) (model.NewCast, error) {
 	res, err := ec.unmarshalInputNewCast(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNNewEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewEvent(ctx context.Context, v interface{}) (model.NewEvent, error) {
+func (ec *executionContext) unmarshalNNewEvent2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewEvent(ctx context.Context, v interface{}) (model.NewEvent, error) {
 	res, err := ec.unmarshalInputNewEvent(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNNewGroup2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewGroup(ctx context.Context, v interface{}) (model.NewGroup, error) {
+func (ec *executionContext) unmarshalNNewGroup2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewGroup(ctx context.Context, v interface{}) (model.NewGroup, error) {
 	res, err := ec.unmarshalInputNewGroup(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNNewOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewOption(ctx context.Context, v interface{}) (model.NewOption, error) {
+func (ec *executionContext) unmarshalNNewOption2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewOption(ctx context.Context, v interface{}) (model.NewOption, error) {
 	res, err := ec.unmarshalInputNewOption(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNNewUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewUser(ctx context.Context, v interface{}) (model.NewUser, error) {
+func (ec *executionContext) unmarshalNNewUser2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewUser(ctx context.Context, v interface{}) (model.NewUser, error) {
 	res, err := ec.unmarshalInputNewUser(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNNewVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋgraphᚋmodelᚐNewVote(ctx context.Context, v interface{}) (model.NewVote, error) {
+func (ec *executionContext) unmarshalNNewVote2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋgraphᚋmodelᚐNewVote(ctx context.Context, v interface{}) (model.NewVote, error) {
 	res, err := ec.unmarshalInputNewVote(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx context.Context, sel ast.SelectionSet, v models.Option) graphql.Marshaler {
+func (ec *executionContext) marshalNOption2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOption(ctx context.Context, sel ast.SelectionSet, v models.Option) graphql.Marshaler {
 	return ec._Option(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNOption2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOptionᚄ(ctx context.Context, sel ast.SelectionSet, v []models.Option) graphql.Marshaler {
+func (ec *executionContext) marshalNOption2ᚕgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOptionᚄ(ctx context.Context, sel ast.SelectionSet, v []models.Option) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -6720,7 +6720,7 @@ func (ec *executionContext) marshalNOption2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋ
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNOption2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, sel, v[i])
+			ret[i] = ec.marshalNOption2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOption(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -6733,7 +6733,7 @@ func (ec *executionContext) marshalNOption2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋ
 	return ret
 }
 
-func (ec *executionContext) marshalNOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx context.Context, sel ast.SelectionSet, v *models.Option) graphql.Marshaler {
+func (ec *executionContext) marshalNOption2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOption(ctx context.Context, sel ast.SelectionSet, v *models.Option) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -6818,11 +6818,11 @@ func (ec *executionContext) marshalNUint2ᚕuintᚄ(ctx context.Context, sel ast
 	return ret
 }
 
-func (ec *executionContext) marshalNUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v models.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v models.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v *models.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v *models.User) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -6832,11 +6832,11 @@ func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋcl
 	return ec._User(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx context.Context, sel ast.SelectionSet, v models.Vote) graphql.Marshaler {
+func (ec *executionContext) marshalNVote2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐVote(ctx context.Context, sel ast.SelectionSet, v models.Vote) graphql.Marshaler {
 	return ec._Vote(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNVote2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx context.Context, sel ast.SelectionSet, v *models.Vote) graphql.Marshaler {
+func (ec *executionContext) marshalNVote2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐVote(ctx context.Context, sel ast.SelectionSet, v *models.Vote) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -7099,11 +7099,11 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return graphql.MarshalBoolean(*v)
 }
 
-func (ec *executionContext) marshalOCalender2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx context.Context, sel ast.SelectionSet, v models.Calender) graphql.Marshaler {
+func (ec *executionContext) marshalOCalender2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCalender(ctx context.Context, sel ast.SelectionSet, v models.Calender) graphql.Marshaler {
 	return ec._Calender(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOCalender2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalenderᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Calender) graphql.Marshaler {
+func (ec *executionContext) marshalOCalender2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCalenderᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Calender) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -7130,7 +7130,7 @@ func (ec *executionContext) marshalOCalender2ᚕᚖgithubᚗcomᚋkougakusaiHPTe
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, sel, v[i])
+			ret[i] = ec.marshalNCalender2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCalender(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -7143,14 +7143,14 @@ func (ec *executionContext) marshalOCalender2ᚕᚖgithubᚗcomᚋkougakusaiHPTe
 	return ret
 }
 
-func (ec *executionContext) marshalOCalender2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCalender(ctx context.Context, sel ast.SelectionSet, v *models.Calender) graphql.Marshaler {
+func (ec *executionContext) marshalOCalender2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCalender(ctx context.Context, sel ast.SelectionSet, v *models.Calender) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Calender(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOCast2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx context.Context, sel ast.SelectionSet, v []models.Cast) graphql.Marshaler {
+func (ec *executionContext) marshalOCast2ᚕgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx context.Context, sel ast.SelectionSet, v []models.Cast) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -7177,7 +7177,7 @@ func (ec *executionContext) marshalOCast2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋcl
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCast2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, sel, v[i])
+			ret[i] = ec.marshalNCast2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCast(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -7190,7 +7190,7 @@ func (ec *executionContext) marshalOCast2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋcl
 	return ret
 }
 
-func (ec *executionContext) marshalOCast2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Cast) graphql.Marshaler {
+func (ec *executionContext) marshalOCast2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCastᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Cast) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -7217,7 +7217,7 @@ func (ec *executionContext) marshalOCast2ᚕᚖgithubᚗcomᚋkougakusaiHPTeam�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx, sel, v[i])
+			ret[i] = ec.marshalNCast2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCast(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -7230,14 +7230,14 @@ func (ec *executionContext) marshalOCast2ᚕᚖgithubᚗcomᚋkougakusaiHPTeam�
 	return ret
 }
 
-func (ec *executionContext) marshalOCast2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐCast(ctx context.Context, sel ast.SelectionSet, v *models.Cast) graphql.Marshaler {
+func (ec *executionContext) marshalOCast2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐCast(ctx context.Context, sel ast.SelectionSet, v *models.Cast) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Cast(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOEvent2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx context.Context, sel ast.SelectionSet, v []models.Event) graphql.Marshaler {
+func (ec *executionContext) marshalOEvent2ᚕgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx context.Context, sel ast.SelectionSet, v []models.Event) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -7264,7 +7264,7 @@ func (ec *executionContext) marshalOEvent2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋc
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNEvent2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, sel, v[i])
+			ret[i] = ec.marshalNEvent2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -7277,7 +7277,7 @@ func (ec *executionContext) marshalOEvent2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋc
 	return ret
 }
 
-func (ec *executionContext) marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Event) graphql.Marshaler {
+func (ec *executionContext) marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEventᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Event) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -7304,7 +7304,7 @@ func (ec *executionContext) marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiHPTeam�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, sel, v[i])
+			ret[i] = ec.marshalNEvent2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEvent(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -7317,18 +7317,18 @@ func (ec *executionContext) marshalOEvent2ᚕᚖgithubᚗcomᚋkougakusaiHPTeam�
 	return ret
 }
 
-func (ec *executionContext) marshalOEvent2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐEvent(ctx context.Context, sel ast.SelectionSet, v *models.Event) graphql.Marshaler {
+func (ec *executionContext) marshalOEvent2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐEvent(ctx context.Context, sel ast.SelectionSet, v *models.Event) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Event(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOGroup2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx context.Context, sel ast.SelectionSet, v models.Group) graphql.Marshaler {
+func (ec *executionContext) marshalOGroup2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐGroup(ctx context.Context, sel ast.SelectionSet, v models.Group) graphql.Marshaler {
 	return ec._Group(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOGroup2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroupᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Group) graphql.Marshaler {
+func (ec *executionContext) marshalOGroup2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐGroupᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Group) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -7355,7 +7355,7 @@ func (ec *executionContext) marshalOGroup2ᚕᚖgithubᚗcomᚋkougakusaiHPTeam�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, sel, v[i])
+			ret[i] = ec.marshalNGroup2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐGroup(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -7368,14 +7368,14 @@ func (ec *executionContext) marshalOGroup2ᚕᚖgithubᚗcomᚋkougakusaiHPTeam�
 	return ret
 }
 
-func (ec *executionContext) marshalOGroup2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐGroup(ctx context.Context, sel ast.SelectionSet, v *models.Group) graphql.Marshaler {
+func (ec *executionContext) marshalOGroup2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐGroup(ctx context.Context, sel ast.SelectionSet, v *models.Group) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Group(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOOption2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOptionᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Option) graphql.Marshaler {
+func (ec *executionContext) marshalOOption2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOptionᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Option) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -7402,7 +7402,7 @@ func (ec *executionContext) marshalOOption2ᚕᚖgithubᚗcomᚋkougakusaiHPTeam
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx, sel, v[i])
+			ret[i] = ec.marshalNOption2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOption(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -7415,7 +7415,7 @@ func (ec *executionContext) marshalOOption2ᚕᚖgithubᚗcomᚋkougakusaiHPTeam
 	return ret
 }
 
-func (ec *executionContext) marshalOOption2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐOption(ctx context.Context, sel ast.SelectionSet, v *models.Option) graphql.Marshaler {
+func (ec *executionContext) marshalOOption2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐOption(ctx context.Context, sel ast.SelectionSet, v *models.Option) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -7461,7 +7461,7 @@ func (ec *executionContext) marshalOUint2ᚖuint(ctx context.Context, sel ast.Se
 	return model.MarshalUint(*v)
 }
 
-func (ec *executionContext) marshalOUser2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []models.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚕgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []models.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -7488,7 +7488,7 @@ func (ec *executionContext) marshalOUser2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋcl
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNUser2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, sel, v[i])
+			ret[i] = ec.marshalNUser2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUser(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -7501,7 +7501,7 @@ func (ec *executionContext) marshalOUser2ᚕgithubᚗcomᚋkougakusaiHPTeamᚋcl
 	return ret
 }
 
-func (ec *executionContext) marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -7528,7 +7528,7 @@ func (ec *executionContext) marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiHPTeam�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx, sel, v[i])
+			ret[i] = ec.marshalNUser2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUser(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -7541,18 +7541,18 @@ func (ec *executionContext) marshalOUser2ᚕᚖgithubᚗcomᚋkougakusaiHPTeam�
 	return ret
 }
 
-func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v *models.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v *models.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._User(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOVote2githubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx context.Context, sel ast.SelectionSet, v models.Vote) graphql.Marshaler {
+func (ec *executionContext) marshalOVote2githubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐVote(ctx context.Context, sel ast.SelectionSet, v models.Vote) graphql.Marshaler {
 	return ec._Vote(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOVote2ᚖgithubᚗcomᚋkougakusaiHPTeamᚋclubhookᚑapiᚋmodelsᚐVote(ctx context.Context, sel ast.SelectionSet, v *models.Vote) graphql.Marshaler {
+func (ec *executionContext) marshalOVote2ᚖgithubᚗcomᚋkougakusaiᚋclubhookᚑapiᚋmodelsᚐVote(ctx context.Context, sel ast.SelectionSet, v *models.Vote) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
