@@ -11,10 +11,10 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/kougakusai/clubhook-api/graph"
-	"github.com/kougakusai/clubhook-api/graph/generated"
+	"github.com/kougakusai/clubhook-backend/graph"
+	"github.com/kougakusai/clubhook-backend/graph/generated"
 
-	"github.com/kougakusai/clubhook-api/db"
+	"github.com/kougakusai/clubhook-backend/db"
 )
 
 func main() {
@@ -47,7 +47,7 @@ func getListeningPort() string {
 
 func hello() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello from clubhook-api.")
+		return c.String(http.StatusOK, "Hello from clubhook-backend.")
 	}
 }
 

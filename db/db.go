@@ -6,7 +6,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"github.com/kougakusai/clubhook-api/models"
+	"github.com/kougakusai/clubhook-backend/models"
 )
 
 func Migrate(db *gorm.DB) *gorm.DB {

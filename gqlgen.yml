@@ -35,7 +35,7 @@ resolver:
 # gqlgen will search for any type names in the schema in these go packages
 # if they match it will use them, otherwise it will generate them.
 autobind:
-  - "github.com/kougakusai/clubhook-api/graph/model"
+  - "github.com/kougakusai/clubhook-backend/graph/model"
 
 # This section declares type mapping between the GraphQL and go type systems
 #
@@ -56,32 +56,32 @@ models:
       - github.com/99designs/gqlgen/graphql.Int32
   Uint:
     model:
-      - github.com/kougakusai/clubhook-api/graph/model.Uint
+      - github.com/kougakusai/clubhook-backend/graph/model.Uint
 
   User:
     model:
-      - github.com/kougakusai/clubhook-api/models.User
+      - github.com/kougakusai/clubhook-backend/models.User
 
   Group:
     model:
-      - github.com/kougakusai/clubhook-api/models.Group
+      - github.com/kougakusai/clubhook-backend/models.Group
 
   Event:
     model:
-      - github.com/kougakusai/clubhook-api/models.Event
+      - github.com/kougakusai/clubhook-backend/models.Event
 
   Calender:
     model:
-      - github.com/kougakusai/clubhook-api/models.Calender
+      - github.com/kougakusai/clubhook-backend/models.Calender
 
   Vote:
     model:
-      - github.com/kougakusai/clubhook-api/models.Vote
+      - github.com/kougakusai/clubhook-backend/models.Vote
 
   Option:
     model:
-      - github.com/kougakusai/clubhook-api/models.Option
+      - github.com/kougakusai/clubhook-backend/models.Option
 
   Cast:
     model:
-      - github.com/kougakusai/clubhook-api/models.Cast
+      - github.com/kougakusai/clubhook-backend/models.Cast

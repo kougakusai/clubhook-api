@@ -18,4 +18,4 @@ services:
     environment:
       - GOPATH=/go
     volumes:
-      - .:/go/src/github.com/kougakusai/clubhook-api
+      - .:/go/src/github.com/kougakusai/clubhook-backend

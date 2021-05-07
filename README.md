@@ -1,23 +1,22 @@
-# clubhook-api
+# clubhook-backend
 
-https://clubhook-api.herokuapp.com/
+https://clubhook-backend.herokuapp.com/
 
 ## Getting Started
 
-Docker(docker-compose)で開発環境を用意する場合はgit cloneで、
-ローカルで開発する場合はgo getでソースを取得。
+Docker(docker-compose)で開発環境を用意する場合はgit cloneでソースを取得。
 
 #### Clone Repository
 
 ```
-$ git clone https://github.com/kougakusai/clubhook-api.git
-$ cd clubhook-api
+$ git clone https://github.com/kougakusai/clubhook-backend.git
+$ cd clubhook-backend
 ```
 
 #### go get
 
 ```
-$ go get github.com/kougakusai/clubhook-api
+$ go get github.com/kougakusai/clubhook-backend
 ```
 
 #### Docker(docker-compose)で実行する場合
@@ -34,7 +33,7 @@ $ go run main.go
 # Access to "localhost:8000"
 $ exit
 
-$docker-compose down
+$ docker-compose down
 ```
 
 #### VSCodeでDevContainerを起動し開発する場合
