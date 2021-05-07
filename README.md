@@ -13,12 +13,6 @@ $ git clone https://github.com/kougakusai/clubhook-backend.git
 $ cd clubhook-backend
 ```
 
-#### go get
-
-```
-$ go get github.com/kougakusai/clubhook-backend
-```
-
 #### Docker(docker-compose)で実行する場合
 
 ```
