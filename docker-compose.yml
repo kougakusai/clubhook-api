@@ -16,5 +16,3 @@ services:
       - postgres
     ports:
       - "8000:8000"
-    # volumes:
-      # - .:/go/src/app

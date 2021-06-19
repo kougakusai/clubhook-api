@@ -3,11 +3,11 @@ FROM golang:1.16 AS dev
 WORKDIR /go/src/app
 COPY . .
 # 使用するモジュールのインストール
-RUN go install github.com/labstack/echo \
-  gorm.io/gorm && \
-  go install github.com/99designs/gqlgen@latest \
-  github.com/go-delve/delve/cmd/dlv@latest \
-  golang.org/x/tools/gopls@latest
+RUN go install github.com/labstack/echo && \
+  go install gorm.io/gorm && \
+  go install github.com/99designs/gqlgen@latest && \
+  go install github.com/go-delve/delve/cmd/dlv@latest && \
+  go install golang.org/x/tools/gopls@latest
 
 # ビルド用ステージ
 FROM golang:1.16 AS build
