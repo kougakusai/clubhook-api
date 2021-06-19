@@ -9,13 +9,12 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=example_db
   app:
-    build: .
+    build:
+      context: .
+      target: prod
     depends_on:
       - postgres
-    tty: true
     ports:
       - "8000:8000"
-    environment:
-      - GOPATH=/go
-    volumes:
-      - .:/go/src/github.com/kougakusai/clubhook-backend
+    # volumes:
+      # - .:/go/src/app
