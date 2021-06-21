@@ -12,6 +12,7 @@ services:
     build:
       context: .
       target: prod
+    image: clubhook-backend_app_prod
     depends_on:
       - postgres
     ports:

@@ -36,10 +36,3 @@ Visual Studio Codeで開発することをおすすめします。
 
 * メニューから「Remote-Containers:Open Folder in Container...」をクリック。
 
-#### 注意
-
-`docker-compose build`を行った後に開発用コンテナを起動しようとするとエラーが起きます。
-その場合は`Rebuild Container`で開発用コンテナを再ビルドしてください。
-
-このエラーを回避するため、開発中の動作確認はdocker-composeを使用せず、
-Visual Studio Codeのターミナルから`go run main.go`でサーバを起動することをおすすめします。
