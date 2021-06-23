@@ -1,14 +1,23 @@
-# 2021/02/28最新version
-FROM golang:1.16.0
-
-# コンテナ内にディレクトリを作成
-RUN mkdir -p /go/src/github.com/kougakusai/clubhook-backend
-
-# コンテナログイン時のディレクトリを設定
-WORKDIR /go/src/github.com/kougakusai/clubhook-backend
-
-# ホストのファイルをコンテナにコピー
-ADD . /go/src/github.com/kougakusai/clubhook-backend
-
+# 開発用ステージ
+FROM golang:1.16 AS dev
+WORKDIR /go/src/app
+COPY . .
 # 使用するモジュールのインストール
-RUN go get github.com/labstack/echo && go get gorm.io/gorm && go get github.com/99designs/gqlgen
+RUN go install github.com/labstack/echo && \
+  go install gorm.io/gorm && \
+  go install github.com/99designs/gqlgen@latest && \
+  go install github.com/go-delve/delve/cmd/dlv@latest && \
+  go install golang.org/x/tools/gopls@latest
+
+# ビルド用ステージ
+FROM golang:1.16 AS build
+WORKDIR /go/src/app
+# Herokuのrelease phaseでログを残すためにcurlを入れる
+RUN apt-get update && apt-get install curl
+COPY . .
+RUN go mod download && CGO_ENABLED=0 GOOS=linux go build -o main main.go
+
+# 実行用ステージ
+FROM scratch AS prod
+COPY --from=build /go/src/app/main /bin/main
+ENTRYPOINT ["/bin/main"]

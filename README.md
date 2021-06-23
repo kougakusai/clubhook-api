@@ -2,35 +2,37 @@
 
 https://clubhook-backend.herokuapp.com/
 
-## Getting Started
+## Requirement
 
-Docker(docker-compose)で開発環境を用意する場合はgit cloneでソースを取得。
+* Docker
 
-#### Clone Repository
+* docker-compose
 
-```
-$ git clone https://github.com/kougakusai/clubhook-backend.git
-$ cd clubhook-backend
-```
+## Usage
 
-#### Docker(docker-compose)で実行する場合
+ローカルでは、docker-composeでコンテナを立ち上げることでサーバが起動します。
 
 ```
 $ docker-compose build
-$ docker-compose up -d
-
-$ docker-compose exec app go run main.go
-# Access to "localhost:8000"
-
-$ docker-compose exec app /bin/bash
-$ go run main.go
-# Access to "localhost:8000"
-$ exit
-
-$ docker-compose down
+$ docker-compose up
 ```
 
-#### VSCodeでDevContainerを起動し開発する場合
-VSCodeを起動後、ウインドウ左下端の緑の部分をクリック。
-メニューから「Remote-Containers:Open Folder in Container...」をクリック。
-git cloneしたディレクトリを選択。
+#### 注意
+
+初回ビルド時などに、appコンテナがpostgresコンテナよりも先に起動し、
+データベースとのコネクションエラーが起きることがあります。
+
+その場合は一度コンテナを`Ctrl+C`などで停止して、
+もう一度`docker-compose up`でコンテナを起動してください。
+
+## Contribution
+
+VSCode Remote Containers向けの設定を用意していますので、
+Visual Studio Codeで開発することをおすすめします。
+
+### Visual Studio Codeで開発用コンテナを起動する方法
+
+* Visual Studio Codeを起動後、ウインドウ左下端の緑の部分をクリック。
+
+* メニューから「Remote-Containers:Open Folder in Container...」をクリック。
+
